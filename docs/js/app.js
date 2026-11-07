@@ -187,7 +187,7 @@
   function recFlag(text, cls) {
     return text ? '<span class="flag rec' + (cls ? " " + cls : "") + '"><b>Recommended:</b> ' + esc(text) + '</span>' : "";
   }
-  function spliceRow(p, sturdyAlt) {
+  function spliceRow(p) {
     var k = "p:" + p.n;
     if (p.optional) {
       // recommended but optional: shown, never counted, never blocks
@@ -201,7 +201,7 @@
         '<span class="pri">' + p.n + '</span><span class="body"><span class="pair">' + spr(groupSprite(p.group), "s-row") + '<span>' + esc(p.base) + '</span>' +
         '<span class="tag unsplice">setup, no splicer</span></span><span class="desc">' + esc(teachText(p)) + '</span></span></label></div>';
     }
-    var flag = p.n === 9 && sturdyAlt.length ? sturdyAlt.join(" and ") + " are good Sturdy options." : "";
+    var flag = "";
     return '<div class="row" id="splice-' + p.n + '" data-row="' + k + '"><label class="chk"><input type="checkbox" data-chk="' + k + '"><span class="box">' + CHECK + '</span>' +
       '<span class="pri">' + p.n + '</span><span class="body"><span class="pair">' + spr(groupSprite(p.group), "s-row") + '<span>' + esc(p.base) + '</span><span class="plus">+</span><span>' + esc(p.partner) + '</span>' +
       '<span class="tag ' + (p.result === "keep" ? "keep" : "unsplice") + '">' + (p.result === "keep" ? "keep fused" : "then unsplice") + '</span></span>' +
@@ -222,8 +222,9 @@
       var v = g.variants[k];
       return '<div class="var-row"><span class="var-label">' + esc(v.label) + '</span><span class="seg" role="group" aria-label="' + esc(v.label) + '">' +
         v.options.map(function (o) {
-          var on = variant[k] === o.id;
-          return '<button type="button" data-var="' + esc(k) + '" data-opt="' + esc(o.id) + '" aria-pressed="' + on + '">' + esc(o.name) + '</button>';
+          var on = variant[k] === o.id, why = !on && window.EndlessVariant.excluded(rawGuide, variant, k, o.id);
+          return '<button type="button" data-var="' + esc(k) + '" data-opt="' + esc(o.id) + '" aria-pressed="' + on + '"' +
+            (why ? ' disabled title="' + esc(why) + '"' : '') + '>' + esc(o.name) + '</button>';
         }).join("") + '</span></div>';
     }).join("") + '</div>';
   }
@@ -233,12 +234,13 @@
   // what the save supports: the recommended build, its starter plans, readiness, and a line per choice
   function planFor(save, info) {
     var c = window.EndlessStarterPlan.choose(rawGuide, save, info, variant);
+    c.pick = window.EndlessVariant.normalize(rawGuide, c.pick);
     var g = window.EndlessVariant.applyVariant(rawGuide, c.pick);
     var rows = window.EndlessStarterPlan.planBuild(g.starters, save, info);
     var lines = [];
     Object.keys(c.status).forEach(function (k) {
       var V = rawGuide.variants[k], st = c.status[k], ok = V.options.filter(function (o) { return st[o.id].ok; });
-      var whyNot = function (list) { return list.map(function (o) { return o.name + " (" + st[o.id].why.map(function (w) { return w.indexOf(o.name + ": ") === 0 ? w.slice(o.name.length + 2) : w; }).join("; ") + ")"; }).join(", "); };
+      var whyNot = function (list) { return list.map(function (o) { return o.name + " (" + st[o.id].why.map(function (w) { return st[o.id].why.length === 1 ? w.replace(/^[^:]+: /, "") : w; }).join("; ") + ")"; }).join(", "); };
       var txt;
       if (V.plan_pick === "only") {
         txt = ok.length === V.options.length ? "both have their starters unlocked, the toggle in Start here picks."
@@ -365,7 +367,6 @@
 
     // splicing, grouped by the base Pokémon
     spliceSteps = g.splicing.steps;
-    var sturdyAlt = (g.starters.filter(function (s) { return s.id === "yamask"; })[0] || {}).alternatives || [];
     h += '<section id="splicing" data-tab="splicing"><div class="sec-head"><h2>Splicing</h2><span class="mono" id="c-splicing"></span></div>' +
       '<p class="sec-note">' + esc(g.splicing.note) + '</p>' +
       (spawnData ? '<p class="where-note">"Where to find" lists wild Pokémon that learn the move by level-up or have the ability. Endless spawns are fully evolved, so each one is shown in its final form, read from the PokeRogue source on ' + esc(spawnData.generated) +
@@ -373,7 +374,7 @@
       '<div class="groups">';
     g.groups.forEach(function (gr) {
       var st = spliceSteps.filter(function (p) { return p.group === gr.id; });
-      if (st.length) h += groupWrap("splicing", gr, st.map(function (p) { return spliceRow(p, sturdyAlt); }).join(""), "splice");
+      if (st.length) h += groupWrap("splicing", gr, st.map(function (p) { return spliceRow(p); }).join(""), "splice");
     });
     h += '</div></section>';
 
@@ -491,7 +492,7 @@
         '<span class="st-count mono">' + d + " / " + n + '</span></a>';
     }).join("") +
       '<h3 class="phase">Reference</h3><a class="stage ref" href="#howto"><span class="st-num">?</span><span class="st-body"><b>How to play</b>' +
-      '<span class="st-blurb">The phases of a run: the early Regigigas carry, the switch, and the running loop.</span></span></a>' +
+      '<span class="st-blurb">The phases of a run: the early carry, the switch, and the running loop.</span></span></a>' +
       '<a class="stage ref" href="#playbook"><span class="st-num">→</span><span class="st-body"><b>In the run</b>' +
       '<span class="st-blurb">How to fight bosses once the team is built. Reference only.</span></span></a>';
   }
@@ -698,8 +699,8 @@
     if (chip) { var ck = chip.getAttribute("data-chip"), cc = {}; cc[ck] = val(ck) ? 0 : 1; store.set(cc); return; }
     var vb = t.closest("[data-var]");
     if (vb) {
-      variant[vb.getAttribute("data-var")] = vb.getAttribute("data-opt"); saveVariant();
-      var y = window.scrollY; render(); update(); window.scrollTo(0, y); return;
+      variant[vb.getAttribute("data-var")] = vb.getAttribute("data-opt");
+      var y = window.scrollY; render(); saveVariant(); update(); window.scrollTo(0, y); return;
     }
     var more = t.closest("[data-more]");
     if (more) { var gk = more.getAttribute("data-more"); expanded[gk] = !expanded[gk]; updateGroups(); return; }

@@ -28,12 +28,17 @@ def wanted_keys():
     guide = json.load(open(GUIDE))
     spawns = json.load(open(SPAWNS))
     keys = set()
+    def strings(v):
+        # a sprite can be a {"$switch": [...]} that picks one per build variant: take every case
+        if isinstance(v, str):
+            return [v]
+        if isinstance(v, dict) and isinstance(v.get("$switch"), list):
+            return [x for c in v["$switch"] for x in strings(c.get("value"))]
+        return []
     for g in guide.get("groups", []):
-        if g.get("sprite"):
-            keys.add(g["sprite"])
+        keys.update(strings(g.get("sprite")))
     for s in guide.get("starters", []):
-        if s.get("sprite"):
-            keys.add(s["sprite"])
+        keys.update(strings(s.get("sprite")))
         # alternatives the starter plan can suggest (Gastly for Smeargle, ...)
         for a in (s.get("plan") or {}).get("alts", []):
             keys.add(a)

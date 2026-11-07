@@ -188,6 +188,7 @@ input:checked + .box svg { opacity: 1; }
 .seg button { font: inherit; font-size: 13.5px; padding: 6px 14px; border: 0; background: var(--surface); color: var(--fg); cursor: pointer; }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); font-weight: 600; }
+.seg button:disabled { color: var(--muted); opacity: .45; cursor: not-allowed; text-decoration: line-through; }
 .flag.rec { display: block; color: var(--normal); background: color-mix(in srgb, var(--normal) 14%, transparent); border-left: 3px solid var(--normal); border-radius: 4px; padding: 4px 8px; margin-top: 4px; }
 .flag.rec b { color: var(--normal); }
 .tag.opt { border: 1px dashed var(--normal); color: var(--normal); }

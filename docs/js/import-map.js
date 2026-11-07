@@ -32,10 +32,15 @@
         label: nice(ids.species[p.species] || "?") + (p.fusionSpecies ? " + " + nice(ids.species[p.fusionSpecies] || "?") : ""),
       };
     });
-    var groups = {};
-    (guide.groups || []).forEach(function (g) { groups[g.id] = g.family || []; });
+    var groups = {}, baseOnly = {};
+    (guide.groups || []).forEach(function (g) { groups[g.id] = g.family || []; if (g.base_only) baseOnly[g.family] = true; });
     function inFam(m, fams) { return fams.indexOf(m.fam) >= 0 || (m.ffam && fams.indexOf(m.ffam) >= 0); }
-    function membersOf(fams) { return members.filter(function (m) { return inFam(m, fams); }); }
+    // a base_only group (Boss Killer base) only counts Pokémon that have it as the base species, so the
+    // Runner's wild Dugtrio fusion partner is not mistaken for a Diglett-line Boss Killer
+    function membersOf(fams) {
+      var strict = baseOnly[fams];
+      return members.filter(function (m) { return strict ? fams.indexOf(m.fam) >= 0 : inFam(m, fams); });
+    }
     function names(ms) { return ms.map(function (m) { return m.label; }).join(", "); }
 
     function knows(ms, moves, any) {
@@ -179,17 +184,19 @@
   // option in guide.json lists the families that give it away (`detect`). Only a clear signal counts:
   // exactly one option of a choice is present; otherwise null (keep the toggle).
   function detectVariant(session, ids, guide) {
-    var fams = {};
+    var fams = {}, baseFams = {};
     (session.party || []).forEach(function (p) {
-      [p.species, p.fusionSpecies].forEach(function (id) {
+      [p.species, p.fusionSpecies].forEach(function (id, i) {
         var n = id && ids.species[id];
         if (!n) return;
         fams[ids.family[n] || n] = true;
+        if (i === 0) baseFams[ids.family[n] || n] = true;
       });
     });
     var out = {};
     Object.keys((guide && guide.variants) || {}).forEach(function (k) {
-      var hit = guide.variants[k].options.filter(function (o) { return (o.detect || []).some(function (f) { return fams[f]; }); });
+      var seen = guide.variants[k].detect_base ? baseFams : fams;   // detect_base: only the base species counts
+      var hit = guide.variants[k].options.filter(function (o) { return (o.detect || []).some(function (f) { return seen[f]; }); });
       out[k] = hit.length === 1 ? hit[0].id : null;
     });
     return out;

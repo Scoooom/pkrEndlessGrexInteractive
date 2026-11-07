@@ -11,7 +11,22 @@
  "pros": [
   "Little to no egg move investment",
   "Can farm Master Balls at any time",
-  "Regigigas carries for a long stretch",
+  {
+   "$switch": [
+    {
+     "when": {
+      "partner": "skitty"
+     },
+     "value": "{mb} carries for a long stretch"
+    },
+    {
+     "when": {
+      "partner": "regigigas"
+     },
+     "value": "Regigigas carries for a long stretch"
+    }
+   ]
+  },
   "Almost never fails a shiny catch",
   "Four team slots, no wasted abilities",
   "No Protect TM needed"
@@ -19,16 +34,20 @@
  "cons": [
   "Needs two speed-invested Pokémon",
   {
-   "text": "Needs hidden abilities, mainly Teddiursa and Regigigas",
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "text": "Needs a hidden ability Teddiursa",
-   "variant": {
-    "carry": "kyogre"
-   }
+   "$switch": [
+    {
+     "when": {
+      "partner": "skitty"
+     },
+     "value": "Needs a hidden ability Teddiursa"
+    },
+    {
+     "when": {
+      "partner": "regigigas"
+     },
+     "value": "Needs hidden abilities, mainly Teddiursa and Regigigas"
+    }
+   ]
   },
   "Heavy splicer usage",
   "Needs a wild Mat Block user"
@@ -42,7 +61,7 @@
    "egg_moves": [],
    "nature": "Any",
    "alternatives": [],
-   "role": "Keeps Run Away as passive after fusion. Honey Gather speeds up rerolls. Learns Thief or Covet, and Roar, by TM.",
+   "role": "Keeps Run Away as passive after fusion. Honey Gather speeds up rerolls. Learns Roar by TM.",
    "import": {
     "family": "TEDDIURSA",
     "hidden": true
@@ -82,136 +101,188 @@
    }
   },
   {
-   "id": "smoochum",
-   "name": "Smoochum",
+   "id": "kyogre",
+   "name": "Kyogre",
    "ability": "Any",
-   "passive": "Psychic Surge",
+   "passive": "Mold Breaker",
    "egg_moves": [],
-   "nature": "Any, with a Speed nature",
+   "nature": "Naive",
    "alternatives": [],
-   "evolves_to": "Jynx",
    "role": {
     "$switch": [
      {
       "when": {
-       "dv": "smeargle"
+       "partner": "skitty"
       },
-      "value": "Fast, fuses later with the Normalize Pokémon. Emergency carry. Must bring Powder Snow so Smeargle can sketch it for the first fusion."
+      "value": "Kyogre carries with Endure, Ice Beam, Water Pulse and Water Spout. Later Skitty fuses onto it as Killer Support. Kyogre stays the base, so the fusion keeps Mold Breaker as passive."
      },
      {
-      "value": "Fast, fuses later with the Normalize Pokémon. Emergency carry."
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": "Base of Killer Support: learns Gastro Acid, Curse and Disable by splicing while Regigigas carries, then Regigigas fuses onto it. It stays the base, so the fusion keeps Mold Breaker as passive."
      }
     ]
    },
    "import": {
-    "$switch": [
-     {
-      "when": {
-       "dv": "smeargle"
-      },
-      "value": {
-       "family": "SMOOCHUM",
-       "knows": [
-        "POWDER_SNOW"
-       ],
-       "or_known_by": "PUMPKABOO"
-      }
-     },
-     {
-      "value": {
-       "family": "SMOOCHUM"
-      }
-     }
-    ]
+    "family": "KYOGRE"
    },
-   "sprite": "SMOOCHUM",
-   "must_know": {
-    "$switch": [
-     {
-      "when": {
-       "dv": "smeargle"
-      },
-      "value": [
-       "Powder Snow"
-      ]
-     },
-     {
-      "value": null
-     }
-    ]
-   },
+   "sprite": "KYOGRE",
    "variant": {
-    "carry": "regigigas"
+    "mb": "kyogre"
    },
    "plan": {
-    "species": "SMOOCHUM",
-    "passive": true,
+    "species": "KYOGRE",
+    "need_passive": true,
     "natures": [
-     "TIMID",
-     "JOLLY",
-     "HASTY",
      "NAIVE"
     ],
-    "moves": {
-     "$switch": [
-      {
-       "when": {
-        "dv": "smeargle"
-       },
-       "value": [
-        "POWDER_SNOW"
-       ]
+    "moves": [
+     "WATER_PULSE"
+    ]
+   }
+  },
+  {
+   "id": "mb-groudon",
+   "name": "Groudon",
+   "ability": "Any",
+   "passive": "Mold Breaker",
+   "egg_moves": [],
+   "nature": "Naive",
+   "alternatives": [],
+   "role": {
+    "$switch": [
+     {
+      "when": {
+       "partner": "skitty"
       },
-      {
-       "value": null
-      }
-     ]
+      "value": "Suggested carry moves: High Horsepower (TM) for one target and Precipice Blades (Lv 75) to hit both enemies. Use the Rock Slide TM until then. Later Skitty fuses onto it as Killer Support. Groudon stays the base, so the fusion keeps Mold Breaker as passive."
+     },
+     {
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": "Base of Killer Support: learns Gastro Acid, Curse and Disable by splicing while Regigigas carries, then Regigigas fuses onto it. It stays the base, so the fusion keeps Mold Breaker as passive."
+     }
+    ]
+   },
+   "import": {
+    "family": "GROUDON"
+   },
+   "sprite": "GROUDON",
+   "variant": {
+    "mb": "groudon"
+   },
+   "plan": {
+    "species": "GROUDON",
+    "need_passive": true,
+    "natures": [
+     "NAIVE"
+    ]
+   }
+  },
+  {
+   "id": "mb-dracovish",
+   "name": "Dracovish",
+   "ability": "Any",
+   "passive": "Mold Breaker",
+   "egg_moves": [],
+   "nature": "Naive",
+   "alternatives": [],
+   "role": {
+    "$switch": [
+     {
+      "when": {
+       "partner": "skitty"
+      },
+      "value": "Suggested carry moves: Fishious Rend (Lv 63) for one target and the Rock Slide TM to hit both enemies. Later Skitty fuses onto it as Killer Support. Dracovish stays the base, so the fusion keeps Mold Breaker as passive."
+     },
+     {
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": "Base of Killer Support: learns Gastro Acid, Curse and Disable by splicing while Regigigas carries, then Regigigas fuses onto it. It stays the base, so the fusion keeps Mold Breaker as passive."
+     }
+    ]
+   },
+   "import": {
+    "family": "DRACOVISH"
+   },
+   "sprite": "DRACOVISH",
+   "variant": {
+    "mb": "dracovish"
+   },
+   "plan": {
+    "species": "DRACOVISH",
+    "need_passive": true,
+    "natures": [
+     "NAIVE"
+    ]
+   }
+  },
+  {
+   "id": "mb-samurott",
+   "name": "Oshawott (Hisuian Samurott)",
+   "ability": "Any",
+   "passive": "Mold Breaker",
+   "egg_moves": [],
+   "nature": "Naive",
+   "alternatives": [],
+   "evolves_to": "Dewott, then Hisuian Samurott at Lv 36 at dusk or night",
+   "role": {
+    "$switch": [
+     {
+      "when": {
+       "partner": "skitty"
+      },
+      "value": "Suggested carry moves: Razor Shell (Lv 18) for one target and the Snarl TM to hit both enemies. Later Skitty fuses onto it as Killer Support. Hisuian Samurott stays the base, so the fusion keeps Mold Breaker as passive."
+     },
+     {
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": "Base of Killer Support: learns Gastro Acid, Curse and Disable by splicing while Regigigas carries, then Regigigas fuses onto it. It stays the base, so the fusion keeps Mold Breaker as passive."
+     }
+    ]
+   },
+   "import": {
+    "family": "OSHAWOTT"
+   },
+   "sprite": "HISUI_SAMUROTT",
+   "variant": {
+    "mb": "samurott"
+   },
+   "plan": {
+    "species": "OSHAWOTT",
+    "need_passive": true,
+    "natures": [
+     "NAIVE"
+    ],
+    "passive_of": {
+     "species": "HISUI_SAMUROTT"
     }
    }
   },
   {
-   "id": "yamask",
-   "name": "Yamask",
-   "ability": "Mummy",
-   "passive": "Purifying Salt",
-   "egg_moves": [],
-   "nature": "Any",
-   "alternatives": [
-    "Pichu",
-    "Diglett"
-   ],
-   "role": "Late game boss killer using damage over time. Has Heal Block from level 1. Staying unevolved keeps HP low so Leech Seed heals to full. Pichu and Diglett come with Sturdy as passive.",
-   "import": {
-    "family": "YAMASK"
-   },
-   "sprite": "YAMASK",
-   "variant": {
-    "killer": "yamazone"
-   },
-   "plan": {
-    "species": "YAMASK",
-    "passive": true
-   }
-  },
-  {
-   "id": "nincada",
-   "name": "Nincada",
-   "ability": "Any",
+   "id": "skitty",
+   "name": "Skitty",
+   "ability": "Normalize",
    "passive": "Not needed",
    "egg_moves": [],
    "nature": "Any",
    "alternatives": [],
-   "evolves_to": "Ninjask, with Shedinja splitting off",
-   "role": "Source of Shedinja, the boss killer. See the Nincada setup step in Splicing.",
+   "role": "Fusion partner for the Mold Breaker base. Learns Entrainment, Gastro Acid, Curse and Disable through splicing, so the base keeps its carry moves until the final fusion. As the second species it gives the fusion its Normalize ability.",
    "import": {
-    "family": "NINCADA"
+    "family": "SKITTY",
+    "ability_index": 1
    },
-   "sprite": "NINCADA",
+   "sprite": "SKITTY",
    "variant": {
-    "killer": "shedinja"
+    "partner": "skitty"
    },
    "plan": {
-    "species": "NINCADA"
+    "species": "SKITTY",
+    "ability": 1
    }
   },
   {
@@ -224,14 +295,14 @@
    ],
    "nature": "Adamant (+Atk, -SpAtk)",
    "alternatives": [],
-   "role": "Centre of the build and a strong carry. Rock Slide is its best double battle move. Land's Wrath egg move replaces hunting for Rock Slide.",
+   "role": "The gigas build: carries the run early, Normalize makes all its moves Normal and stronger. Rock Slide is its best double battle move, and the Land's Wrath egg move replaces hunting for it. At the end it fuses onto the Mold Breaker base as Killer Support, giving the fusion Normalize.",
    "import": {
     "family": "REGIGIGAS",
     "hidden": true
    },
    "sprite": "REGIGIGAS",
    "variant": {
-    "carry": "regigigas"
+    "partner": "regigigas"
    },
    "plan": {
     "species": "REGIGIGAS",
@@ -246,49 +317,243 @@
    }
   },
   {
-   "id": "kyogre",
-   "name": "Kyogre",
+   "id": "st-diglett",
+   "name": "Diglett",
    "ability": "Any",
-   "passive": "Mold Breaker",
+   "passive": "Sturdy",
    "egg_moves": [],
    "nature": "Any",
    "alternatives": [],
-   "role": "Carries the run with Endure, Ice Beam, Water Pulse and Water Spout. Later fuses with Skitty and becomes Killer Support. Kyogre stays the base, so the fusion keeps Mold Breaker as passive.",
+   "evolves_to": "Dugtrio",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Ground type, so the fusion is immune to sandstorm.",
    "import": {
-    "family": "KYOGRE"
+    "family": "DIGLETT"
    },
-   "sprite": "KYOGRE",
+   "sprite": "DIGLETT",
    "variant": {
-    "carry": "kyogre"
+    "sturdy": "diglett"
    },
    "plan": {
-    "species": "KYOGRE",
-    "passive": true,
-    "moves": [
-     "WATER_PULSE"
-    ]
+    "species": "DIGLETT",
+    "need_passive": true,
+    "passive_of": {
+     "species": "DUGTRIO"
+    }
    }
   },
   {
-   "id": "skitty",
-   "name": "Skitty",
-   "ability": "Normalize",
-   "passive": "Not needed",
+   "id": "st-alola_diglett",
+   "name": "Alolan Diglett",
+   "ability": "Any",
+   "passive": "Sturdy",
    "egg_moves": [],
    "nature": "Any",
    "alternatives": [],
-   "role": "Fusion partner for Kyogre. Learns Entrainment, Gastro Acid, Curse and Shed Tail through splicing, so Kyogre keeps its carry moves until the final fusion. As the second species it gives the fusion its Normalize ability. Kyogre + Skitty is Water/Normal.",
+   "evolves_to": "Alolan Dugtrio",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Ground type, so the fusion is immune to sandstorm.",
    "import": {
-    "family": "SKITTY",
-    "ability_index": 1
+    "family": "ALOLA_DIGLETT"
    },
-   "sprite": "SKITTY",
+   "sprite": "ALOLA_DIGLETT",
    "variant": {
-    "carry": "kyogre"
+    "sturdy": "alola_diglett"
    },
    "plan": {
-    "species": "SKITTY",
-    "ability": 1
+    "species": "ALOLA_DIGLETT",
+    "need_passive": true,
+    "passive_of": {
+     "species": "ALOLA_DUGTRIO"
+    }
+   }
+  },
+  {
+   "id": "st-stonjourner",
+   "name": "Stonjourner",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Rock type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "STONJOURNER"
+   },
+   "sprite": "STONJOURNER",
+   "variant": {
+    "sturdy": "stonjourner"
+   },
+   "plan": {
+    "species": "STONJOURNER",
+    "need_passive": true
+   }
+  },
+  {
+   "id": "st-phanpy",
+   "name": "Phanpy",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Do not evolve",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Ground type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "PHANPY"
+   },
+   "sprite": "PHANPY",
+   "variant": {
+    "sturdy": "phanpy"
+   },
+   "plan": {
+    "species": "PHANPY",
+    "need_passive": true
+   }
+  },
+  {
+   "id": "st-drilbur",
+   "name": "Drilbur",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Excadrill. Do not Mega Evolve it",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Ground type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "DRILBUR"
+   },
+   "sprite": "DRILBUR",
+   "variant": {
+    "sturdy": "drilbur"
+   },
+   "plan": {
+    "species": "DRILBUR",
+    "need_passive": true,
+    "passive_of": {
+     "species": "EXCADRILL"
+    }
+   }
+  },
+  {
+   "id": "st-rockruff",
+   "name": "Rockruff",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Midday Lycanroc",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Rock type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "ROCKRUFF"
+   },
+   "sprite": "ROCKRUFF",
+   "variant": {
+    "sturdy": "rockruff"
+   },
+   "plan": {
+    "species": "ROCKRUFF",
+    "need_passive": true,
+    "passive_of": {
+     "species": "LYCANROC",
+     "form": 0
+    }
+   }
+  },
+  {
+   "id": "st-omanyte",
+   "name": "Omanyte",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Omastar",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Rock type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "OMANYTE"
+   },
+   "sprite": "OMANYTE",
+   "variant": {
+    "sturdy": "omanyte"
+   },
+   "plan": {
+    "species": "OMANYTE",
+    "need_passive": true,
+    "passive_of": {
+     "species": "OMASTAR"
+    }
+   }
+  },
+  {
+   "id": "st-glimmet",
+   "name": "Glimmet",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Do not evolve",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Rock type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "GLIMMET"
+   },
+   "sprite": "GLIMMET",
+   "variant": {
+    "sturdy": "glimmet"
+   },
+   "plan": {
+    "species": "GLIMMET",
+    "need_passive": true
+   }
+  },
+  {
+   "id": "st-minior",
+   "name": "Minior",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive. Rock type, so the fusion is immune to sandstorm.",
+   "import": {
+    "family": "MINIOR"
+   },
+   "sprite": "MINIOR",
+   "variant": {
+    "sturdy": "minior"
+   },
+   "plan": {
+    "species": "MINIOR",
+    "need_passive": true
+   }
+  },
+  {
+   "id": "st-sinistea",
+   "name": "Sinistea (Antique)",
+   "ability": "Any",
+   "passive": "Sturdy",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Do not evolve",
+   "role": "Boss Killer base. Learns Nature's Madness, Leech Seed, Soak and Heal Block by splicing, then a wild Gholdengo fuses onto it. It stays the base, so the fusion keeps Sturdy as passive.",
+   "import": {
+    "family": "SINISTEA"
+   },
+   "sprite": "SINISTEA",
+   "variant": {
+    "sturdy": "sinistea"
+   },
+   "plan": {
+    "species": "SINISTEA",
+    "need_passive": true,
+    "passive_of": {
+     "species": "SINISTEA",
+     "form": 1
+    },
+    "form": 1,
+    "form_name": "Antique"
    }
   },
   {
@@ -425,6 +690,75 @@
  ],
  "items": [
   {
+   "id": "soul-ky",
+   "name": "Soul Dew",
+   "holder": "{mb}",
+   "qty": 10,
+   "source": "variant",
+   "group": "mb",
+   "import": {
+    "held": "SOUL_DEW"
+   },
+   "variant": {
+    "partner": "skitty"
+   }
+  },
+  {
+   "id": "carbos-ky",
+   "name": "Carbos",
+   "holder": "{mb}",
+   "qty": 31,
+   "source": "variant",
+   "group": "mb",
+   "import": {
+    "held": "BASE_STAT_BOOSTER",
+    "stat": 5
+   },
+   "variant": {
+    "partner": "skitty"
+   },
+   "max_iv": 5
+  },
+  {
+   "id": "lucky-ky",
+   "name": "Lucky Egg",
+   "holder": "{mb}",
+   "qty": 60,
+   "source": "variant",
+   "group": "mb",
+   "import": {
+    "held": "LUCKY_EGG"
+   },
+   "variant": {
+    "partner": "skitty"
+   }
+  },
+  {
+   "id": "golden-ky",
+   "name": "Golden Egg",
+   "holder": "{mb}",
+   "qty": 18,
+   "source": "variant",
+   "group": "mb",
+   "import": {
+    "held": "GOLDEN_EGG"
+   },
+   "variant": {
+    "partner": "skitty"
+   }
+  },
+  {
+   "id": "shards-ky",
+   "name": "Ghost Tera Shard",
+   "holder": "{mb}",
+   "qty": 1,
+   "source": "variant",
+   "group": "mb",
+   "import": {
+    "tera": "GHOST"
+   }
+  },
+  {
    "id": "soul-rg",
    "name": "Soul Dew",
    "holder": "Regigigas",
@@ -435,57 +769,7 @@
     "held": "SOUL_DEW"
    },
    "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "soul-gg",
-   "name": "Soul Dew",
-   "holder": "Gourgeist",
-   "qty": 10,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "SOUL_DEW"
-   }
-  },
-  {
-   "id": "lefto",
-   "name": "Leftovers",
-   "holder": "Yamask",
-   "qty": 4,
-   "source": "items_table",
-   "group": "yamask",
-   "import": {
-    "held": "LEFTOVERS"
-   },
-   "variant": {
-    "killer": "yamazone"
-   }
-  },
-  {
-   "id": "wide-ym",
-   "name": "Wide Lens",
-   "holder": "Yamask",
-   "qty": 2,
-   "source": "items_table",
-   "group": "yamask",
-   "import": {
-    "held": "WIDE_LENS"
-   },
-   "variant": {
-    "killer": "yamazone"
-   }
-  },
-  {
-   "id": "wide-pk",
-   "name": "Wide Lens",
-   "holder": "Pumpkaboo",
-   "qty": 3,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "WIDE_LENS"
+    "partner": "regigigas"
    }
   },
   {
@@ -501,21 +785,8 @@
    },
    "max_iv": 5,
    "variant": {
-    "carry": "regigigas"
+    "partner": "regigigas"
    }
-  },
-  {
-   "id": "carbos-gg",
-   "name": "Carbos",
-   "holder": "Gourgeist",
-   "qty": 31,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "BASE_STAT_BOOSTER",
-    "stat": 5
-   },
-   "max_iv": 5
   },
   {
    "id": "rockslide",
@@ -537,7 +808,7 @@
    ],
    "done_after_step": 17,
    "variant": {
-    "carry": "regigigas"
+    "partner": "regigigas"
    },
    "done_if": "landswrath"
   },
@@ -560,7 +831,7 @@
    ],
    "done_after_step": 17,
    "variant": {
-    "carry": "regigigas"
+    "partner": "regigigas"
    },
    "rec_species": [
     {
@@ -585,27 +856,104 @@
    ],
    "done_after_step": 17,
    "variant": {
-    "carry": "regigigas"
+    "partner": "regigigas"
    }
   },
   {
-   "id": "thief",
-   "name": "Covet or Thief TM",
-   "holder": "Teddiursa",
-   "qty": 1,
+   "id": "lucky-rg",
+   "name": "Lucky Egg",
+   "holder": "Regigigas",
+   "qty": 60,
    "source": "items_table",
-   "group": "teddiursa",
+   "group": "regigigas",
    "import": {
-    "move": [
-     "THIEF",
-     "COVET"
-    ],
-    "any": true
+    "held": "LUCKY_EGG"
    },
-   "splice": [
-    "THIEF",
-    "COVET"
-   ]
+   "variant": {
+    "partner": "regigigas"
+   }
+  },
+  {
+   "id": "golden-rg",
+   "name": "Golden Egg",
+   "holder": "Regigigas",
+   "qty": 18,
+   "source": "items_table",
+   "group": "regigigas",
+   "import": {
+    "held": "GOLDEN_EGG"
+   },
+   "variant": {
+    "partner": "regigigas"
+   }
+  },
+  {
+   "id": "soul-gg",
+   "name": "Soul Dew",
+   "holder": "Gourgeist",
+   "qty": 10,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "SOUL_DEW"
+   }
+  },
+  {
+   "id": "carbos-gg",
+   "name": "Carbos",
+   "holder": "Gourgeist",
+   "qty": 31,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "BASE_STAT_BOOSTER",
+    "stat": 5
+   },
+   "max_iv": 5
+  },
+  {
+   "id": "lucky-gg",
+   "name": "Lucky Egg",
+   "holder": "Gourgeist",
+   "qty": 60,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "LUCKY_EGG"
+   }
+  },
+  {
+   "id": "golden-gg",
+   "name": "Golden Egg",
+   "holder": "Gourgeist",
+   "qty": 18,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "GOLDEN_EGG"
+   }
+  },
+  {
+   "id": "kings",
+   "name": "King's Rock",
+   "holder": "Gourgeist",
+   "qty": 3,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "KINGS_ROCK"
+   }
+  },
+  {
+   "id": "multi-gg",
+   "name": "Multi Lens",
+   "holder": "Gourgeist",
+   "qty": 2,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "MULTI_LENS"
+   }
   },
   {
    "id": "roar",
@@ -624,6 +972,17 @@
    ]
   },
   {
+   "id": "reviver-td",
+   "name": "Reviver Seed",
+   "holder": "Runner",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "teddiursa",
+   "import": {
+    "held": "REVIVER_SEED"
+   }
+  },
+  {
    "id": "tera",
    "name": "Tera Orb",
    "holder": null,
@@ -635,331 +994,25 @@
    }
   },
   {
-   "id": "shards-teddiursa",
-   "name": "Ghost Tera Shard",
-   "holder": "Teddiursa",
-   "qty": 1,
+   "id": "lefto",
+   "name": "Leftovers",
+   "holder": "Boss Killer",
+   "qty": 4,
    "source": "items_table",
-   "group": "teddiursa",
+   "group": "killer",
    "import": {
-    "tera": "GHOST"
+    "held": "LEFTOVERS"
    }
   },
   {
-   "id": "shards-jynx",
-   "name": "Ghost Tera Shard",
-   "holder": "Jynx",
-   "qty": 1,
-   "source": "items_table",
-   "group": "jynx",
-   "import": {
-    "tera": "GHOST"
-   },
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "multi-gg",
-   "name": "Multi Lens",
-   "holder": "Gourgeist",
-   "qty": 2,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "MULTI_LENS"
-   }
-  },
-  {
-   "id": "kings",
-   "name": "King's Rock",
-   "holder": "Gourgeist",
-   "qty": 3,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "KINGS_ROCK"
-   }
-  },
-  {
-   "id": "lucky-rg",
-   "name": "Lucky Egg",
-   "holder": "Regigigas",
-   "qty": 60,
-   "source": "items_table",
-   "group": "regigigas",
-   "import": {
-    "held": "LUCKY_EGG"
-   },
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "lucky-gg",
-   "name": "Lucky Egg",
-   "holder": "Gourgeist",
-   "qty": 60,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "LUCKY_EGG"
-   }
-  },
-  {
-   "id": "golden-rg",
-   "name": "Golden Egg",
-   "holder": "Regigigas",
-   "qty": 15,
-   "source": "items_table",
-   "group": "regigigas",
-   "import": {
-    "held": "GOLDEN_EGG"
-   },
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "golden-gg",
-   "name": "Golden Egg",
-   "holder": "Gourgeist",
-   "qty": 15,
-   "source": "items_table",
-   "group": "gourgeist",
-   "import": {
-    "held": "GOLDEN_EGG"
-   }
-  },
-  {
-   "id": "mbh-gouot",
-   "name": "Mini Black Hole",
-   "holder": "Staller",
-   "qty": 1,
+   "id": "shell-k",
+   "name": "Shell Bell",
+   "holder": "Boss Killer",
+   "qty": 4,
    "source": "final_builds",
-   "group": "gourgeist",
+   "group": "killer",
    "import": {
-    "held": "MINI_BLACK_HOLE"
-   }
-  },
-  {
-   "id": "mbh-teddiurk",
-   "name": "Mini Black Hole",
-   "holder": "Runner",
-   "qty": 1,
-   "source": "final_builds",
-   "group": "teddiursa",
-   "import": {
-    "held": "MINI_BLACK_HOLE"
-   }
-  },
-  {
-   "id": "mbh-jynx",
-   "name": "Mini Black Hole",
-   "holder": "Killer Support",
-   "qty": 1,
-   "source": "final_builds",
-   "group": "jynx",
-   "import": {
-    "held": "MINI_BLACK_HOLE",
-    "holders": [
-     "SMOOCHUM",
-     "REGIGIGAS"
-    ]
-   },
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "multi-td",
-   "name": "Multi Lens",
-   "holder": "Runner",
-   "qty": 2,
-   "source": "final_builds",
-   "group": "teddiursa",
-   "import": {
-    "held": "MULTI_LENS"
-   }
-  },
-  {
-   "id": "grip",
-   "name": "Grip Claw",
-   "holder": "Killer Support",
-   "qty": 5,
-   "source": "final_builds",
-   "group": "jynx",
-   "import": {
-    "held": "GRIP_CLAW",
-    "holders": [
-     "SMOOCHUM",
-     "REGIGIGAS"
-    ]
-   },
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "mystic",
-   "name": "Mystical Rock",
-   "holder": "Killer Support",
-   "qty": 2,
-   "source": "final_builds",
-   "group": "jynx",
-   "import": {
-    "held": "MYSTICAL_ROCK",
-    "holders": [
-     "SMOOCHUM",
-     "REGIGIGAS"
-    ]
-   },
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "soul-ky",
-   "name": "Soul Dew",
-   "holder": "Kyogre",
-   "qty": 10,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "SOUL_DEW"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "carbos-ky",
-   "name": "Carbos",
-   "holder": "Kyogre",
-   "qty": 31,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "BASE_STAT_BOOSTER",
-    "stat": 5
-   },
-   "variant": {
-    "carry": "kyogre"
-   },
-   "max_iv": 5
-  },
-  {
-   "id": "lucky-ky",
-   "name": "Lucky Egg",
-   "holder": "Kyogre",
-   "qty": 60,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "LUCKY_EGG"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "golden-ky",
-   "name": "Golden Egg",
-   "holder": "Kyogre",
-   "qty": 15,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "GOLDEN_EGG"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "shards-ky",
-   "name": "Ghost Tera Shard",
-   "holder": "Kyogre",
-   "qty": 1,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "tera": "GHOST"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "mbh-ky",
-   "name": "Mini Black Hole",
-   "holder": "Killer Support",
-   "qty": 1,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "MINI_BLACK_HOLE"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "grip-ky",
-   "name": "Grip Claw",
-   "holder": "Killer Support",
-   "qty": 5,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "GRIP_CLAW"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "mystic-ky",
-   "name": "Mystical Rock",
-   "holder": "Killer Support",
-   "qty": 2,
-   "source": "variant",
-   "group": "kyogre",
-   "import": {
-    "held": "MYSTICAL_ROCK"
-   },
-   "variant": {
-    "carry": "kyogre"
-   }
-  },
-  {
-   "id": "wide-sh",
-   "name": "Wide Lens",
-   "holder": "Shedinja",
-   "qty": 2,
-   "source": "variant",
-   "group": "shedinja",
-   "note": "Nature's Madness is 90% accuracy. Two Wide Lens bring it to 100%.",
-   "import": {
-    "held": "WIDE_LENS"
-   },
-   "variant": {
-    "killer": "shedinja"
-   }
-  },
-  {
-   "id": "multi-sh",
-   "name": "Multi Lens",
-   "holder": "Shedinja",
-   "qty": 2,
-   "source": "variant",
-   "group": "shedinja",
-   "note": "Two Multi Lens give Nature's Madness extra hits, which breaks more boss shields.",
-   "import": {
-    "held": "MULTI_LENS"
-   },
-   "variant": {
-    "killer": "shedinja"
+    "held": "SHELL_BELL"
    }
   }
  ],
@@ -986,19 +1039,6 @@
        "value": [
         "Dark Void"
        ]
-      }
-     ]
-    },
-    "alt": {
-     "$switch": [
-      {
-       "when": {
-        "dv": "smeargle"
-       },
-       "value": "Dark Void, Sketch and Powder Snow. Either works: Powder Snow comes from sketching Smoochum."
-      },
-      {
-       "value": null
       }
      ]
     },
@@ -1040,163 +1080,6 @@
     }
    },
    {
-    "n": 3,
-    "base": "Yamask",
-    "partner": "Wild Salt Cure user",
-    "teach": [
-     "Salt Cure"
-    ],
-    "result": "unsplice",
-    "group": "yamask",
-    "import": {
-     "move": [
-      "SALT_CURE"
-     ]
-    },
-    "variant": {
-     "killer": "yamazone"
-    }
-   },
-   {
-    "n": 4,
-    "base": "Regigigas",
-    "partner": "Wild Entrainment user",
-    "teach": [
-     "Entrainment"
-    ],
-    "result": "unsplice",
-    "group": "regigigas",
-    "import": {
-     "move": [
-      "ENTRAINMENT"
-     ]
-    },
-    "variant": {
-     "carry": "regigigas"
-    }
-   },
-   {
-    "n": 5,
-    "base": "Teddiursa",
-    "partner": "Wild Ruination or Nature's Madness user",
-    "teach": [
-     "Ruination or Nature's Madness"
-    ],
-    "result": "unsplice",
-    "group": "teddiursa",
-    "import": {
-     "move": [
-      "RUINATION",
-      "NATURES_MADNESS"
-     ],
-     "any": true
-    }
-   },
-   {
-    "n": 6,
-    "base": "Teddiursa",
-    "partner": "Wild Gastro Acid user",
-    "teach": [
-     "Gastro Acid"
-    ],
-    "result": "unsplice",
-    "group": "teddiursa",
-    "import": {
-     "move": [
-      "GASTRO_ACID"
-     ]
-    }
-   },
-   {
-    "n": 7,
-    "base": "Yamask",
-    "partner": "Wild Leech Seed user",
-    "teach": [
-     "Leech Seed"
-    ],
-    "result": "unsplice",
-    "group": "yamask",
-    "import": {
-     "move": [
-      "LEECH_SEED"
-     ]
-    },
-    "variant": {
-     "killer": "yamazone"
-    }
-   },
-   {
-    "n": 8,
-    "base": "Yamask",
-    "partner": "Wild Soak user",
-    "teach": [
-     "Soak"
-    ],
-    "result": "unsplice",
-    "group": "yamask",
-    "import": {
-     "move": [
-      "SOAK"
-     ]
-    },
-    "variant": {
-     "killer": "yamazone"
-    }
-   },
-   {
-    "n": 9,
-    "base": "Yamask",
-    "partner": "Wild Pokémon with Sturdy",
-    "teach": [],
-    "result": "keep",
-    "group": "yamask",
-    "import": {
-     "fused": true,
-     "ability": "STURDY"
-    },
-    "variant": {
-     "killer": "yamazone"
-    }
-   },
-   {
-    "n": 10,
-    "base": "Jynx",
-    "partner": "Wild Gastro Acid user",
-    "teach": [
-     "Gastro Acid"
-    ],
-    "result": "unsplice",
-    "group": "jynx",
-    "import": {
-     "move": [
-      "GASTRO_ACID"
-     ]
-    },
-    "variant": {
-     "carry": "regigigas"
-    }
-   },
-   {
-    "n": 11,
-    "base": "Jynx",
-    "partner": "Wild Disable and Curse user",
-    "teach": [
-     "Curse",
-     "Disable"
-    ],
-    "result": "unsplice",
-    "group": "jynx",
-    "import": {
-     "move": [
-      "CURSE",
-      "DISABLE"
-     ]
-    },
-    "variant": {
-     "carry": "regigigas"
-    }
-   },
-   {
     "n": 12,
     "base": "Gourgeist",
     "partner": "Wild Powder Snow user",
@@ -1222,21 +1105,6 @@
      "move": [
       "POWDER_SNOW"
      ]
-    }
-   },
-   {
-    "n": 13,
-    "base": "Regigigas",
-    "partner": "Wild Pokémon holding Carbos",
-    "teach": [],
-    "purpose": "Splice and unsplice to stack Carbos until maxed",
-    "result": "unsplice",
-    "group": "regigigas",
-    "import": {
-     "item": "carbos-rg"
-    },
-    "variant": {
-     "carry": "regigigas"
     }
    },
    {
@@ -1277,6 +1145,51 @@
     ]
    },
    {
+    "n": 6,
+    "base": "Teddiursa",
+    "partner": "Wild Gastro Acid user",
+    "teach": [
+     "Gastro Acid"
+    ],
+    "result": "unsplice",
+    "group": "teddiursa",
+    "import": {
+     "move": [
+      "GASTRO_ACID"
+     ]
+    }
+   },
+   {
+    "n": 31,
+    "base": "Teddiursa",
+    "partner": "Wild Core Enforcer user",
+    "teach": [
+     "Core Enforcer"
+    ],
+    "result": "unsplice",
+    "group": "teddiursa",
+    "import": {
+     "move": [
+      "CORE_ENFORCER"
+     ]
+    }
+   },
+   {
+    "n": 32,
+    "base": "Teddiursa",
+    "partner": "Wild Taunt user",
+    "teach": [
+     "Taunt"
+    ],
+    "result": "unsplice",
+    "group": "teddiursa",
+    "import": {
+     "move": [
+      "TAUNT"
+     ]
+    }
+   },
+   {
     "n": 16,
     "base": "Teddiursa",
     "partner": "Wild Pokémon with a lure ability",
@@ -1305,19 +1218,167 @@
     ]
    },
    {
+    "n": 26,
+    "base": "{sturdy}",
+    "partner": "Wild Ruination or Nature's Madness user",
+    "teach": [
+     "Ruination or Nature's Madness"
+    ],
+    "result": "unsplice",
+    "group": "killer",
+    "import": {
+     "move": [
+      "RUINATION",
+      "NATURES_MADNESS"
+     ],
+     "any": true
+    }
+   },
+   {
+    "n": 27,
+    "base": "{sturdy}",
+    "partner": "Wild Leech Seed user",
+    "teach": [
+     "Leech Seed"
+    ],
+    "result": "unsplice",
+    "group": "killer",
+    "import": {
+     "move": [
+      "LEECH_SEED"
+     ]
+    }
+   },
+   {
+    "n": 28,
+    "base": "{sturdy}",
+    "partner": "Wild Soak user",
+    "teach": [
+     "Soak"
+    ],
+    "result": "unsplice",
+    "group": "killer",
+    "import": {
+     "move": [
+      "SOAK"
+     ]
+    }
+   },
+   {
+    "n": 29,
+    "base": "{sturdy}",
+    "partner": "Wild Heal Block user",
+    "teach": [
+     "Heal Block"
+    ],
+    "result": "unsplice",
+    "group": "killer",
+    "import": {
+     "move": [
+      "HEAL_BLOCK"
+     ]
+    }
+   },
+   {
+    "n": 30,
+    "base": "{sturdy}",
+    "partner": "Wild Gholdengo",
+    "teach": [],
+    "result": "keep",
+    "group": "killer",
+    "import": {
+     "fused": true,
+     "with": "GIMMIGHOUL",
+     "ability": "GOOD_AS_GOLD"
+    },
+    "purpose": "Fuse a wild Gholdengo onto it and keep them fused. Gholdengo gives the ability Good as Gold, the base keeps Sturdy as passive."
+   },
+   {
+    "n": 4,
+    "base": "Regigigas",
+    "partner": "Wild Entrainment user",
+    "teach": [
+     "Entrainment"
+    ],
+    "result": "unsplice",
+    "group": "regigigas",
+    "import": {
+     "move": [
+      "ENTRAINMENT"
+     ]
+    },
+    "variant": {
+     "partner": "regigigas"
+    }
+   },
+   {
+    "n": 13,
+    "base": "Regigigas",
+    "partner": "Wild Pokémon holding Carbos",
+    "teach": [],
+    "purpose": "Splice and unsplice to stack Carbos until maxed",
+    "result": "unsplice",
+    "group": "regigigas",
+    "import": {
+     "item": "carbos-rg"
+    },
+    "variant": {
+     "partner": "regigigas"
+    }
+   },
+   {
+    "n": 10,
+    "base": "{mb}",
+    "partner": "Wild Gastro Acid user",
+    "teach": [
+     "Gastro Acid"
+    ],
+    "result": "unsplice",
+    "group": "mb",
+    "import": {
+     "move": [
+      "GASTRO_ACID"
+     ]
+    },
+    "variant": {
+     "partner": "regigigas"
+    }
+   },
+   {
+    "n": 11,
+    "base": "{mb}",
+    "partner": "Wild Disable and Curse user",
+    "teach": [
+     "Curse",
+     "Disable"
+    ],
+    "result": "unsplice",
+    "group": "mb",
+    "import": {
+     "move": [
+      "CURSE",
+      "DISABLE"
+     ]
+    },
+    "variant": {
+     "partner": "regigigas"
+    }
+   },
+   {
     "n": 17,
-    "base": "Jynx",
+    "base": "{mb}",
     "partner": "Regigigas",
     "teach": [],
     "result": "keep",
-    "group": "jynx",
+    "group": "mb",
     "import": {
      "fused": true,
      "with": "REGIGIGAS"
     },
     "variant": {
-     "carry": "regigigas"
-    }
+     "partner": "regigigas"
+    },
+    "lock_note": "Keeping this fusion ends Regigigas's carry and shifts the run into the running phase."
    },
    {
     "n": 18,
@@ -1334,7 +1395,7 @@
      ]
     },
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     }
    },
    {
@@ -1352,7 +1413,7 @@
      ]
     },
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     }
    },
    {
@@ -1370,86 +1431,57 @@
      ]
     },
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     }
    },
    {
     "n": 21,
     "base": "Skitty",
-    "partner": "Wild Shed Tail user",
+    "partner": "Wild Disable user",
     "teach": [
-     "Shed Tail"
+     "Disable"
     ],
     "result": "unsplice",
     "group": "skitty",
     "import": {
      "move": [
-      "SHED_TAIL"
+      "DISABLE"
      ]
     },
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     }
    },
    {
     "n": 22,
-    "base": "Kyogre",
+    "base": "{mb}",
     "partner": "Wild Pokémon holding Carbos",
     "teach": [],
     "result": "unsplice",
-    "group": "kyogre",
+    "group": "mb",
     "import": {
      "item": "carbos-ky"
     },
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     },
     "purpose": "Splice and unsplice to stack Carbos until maxed"
    },
    {
     "n": 23,
-    "base": "Kyogre",
+    "base": "{mb}",
     "partner": "Skitty",
     "teach": [],
     "result": "keep",
-    "group": "kyogre",
+    "group": "mb",
     "import": {
      "fused": true,
      "with": "SKITTY"
     },
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     },
-    "lock_note": "Keeping this fusion locks Kyogre and shifts the run into the Running Phase."
-   },
-   {
-    "n": 24,
-    "base": "Nincada",
-    "partner": "Evolve with an open slot",
-    "teach": [],
-    "result": "setup",
-    "group": "shedinja",
-    "variant": {
-     "killer": "shedinja"
-    },
-    "purpose": "Evolve Nincada with an open party slot (party under 6) and a regular Poké Ball in the bag, not a Great Ball or better. Shedinja splits off with a copy of ALL held items, so move Soul Dews, Choice Scarfs and similar onto Nincada before it evolves.",
-    "import": {
-     "species": "SHEDINJA"
-    }
-   },
-   {
-    "n": 25,
-    "base": "Shedinja",
-    "partner": "Another Shedinja",
-    "teach": [],
-    "result": "keep",
-    "group": "shedinja",
-    "variant": {
-     "killer": "shedinja"
-    },
-    "optional": true,
-    "purpose": "Not needed. Gets Splicers out of the master pool.",
-    "rec": "Optional, if you find one"
+    "lock_note": "Keeping this fusion locks {mb} and shifts the run into the running phase."
    }
   ]
  },
@@ -1466,15 +1498,13 @@
    ],
    "ability": "Any lure ability",
    "passive": "Illuminate",
-   "nature": "Jolly",
+   "nature": "Timid",
    "vitamins": "Carbos to Speed IV",
    "items": {
     "Lucky Egg": 60,
-    "Golden Egg": 15,
+    "Golden Egg": 18,
     "King's Rock": 3,
-    "Mini Black Hole": 1,
     "Soul Dew": 10,
-    "Wide Lens": 3,
     "Multi Lens": 2
    },
    "group": "gourgeist",
@@ -1483,13 +1513,11 @@
    },
    "needs": [
     "soul-gg",
-    "wide-pk",
     "carbos-gg",
     "multi-gg",
     "kings",
     "lucky-gg",
-    "golden-gg",
-    "mbh-gouot"
+    "golden-gg"
    ],
    "rec": "Hidden ability Midnight Lycanroc (No Guard), the fastest sand-immune No Guard pick"
   },
@@ -1498,36 +1526,47 @@
    "name": "Runner",
    "made_from": "Teddiursa + lure ability Pokémon (step 16)",
    "moves": [
-    "Thief or Covet",
-    "Ruination or Nature's Madness",
     "Roar",
-    "Gastro Acid"
+    "Gastro Acid",
+    "Core Enforcer",
+    "Taunt"
    ],
    "ability": "Any lure ability",
    "passive": "Run Away",
    "nature": "Any",
    "vitamins": "none",
    "items": {
-    "Mini Black Hole": 1,
-    "Multi Lens": 2
+    "Reviver Seed": 1
    },
    "group": "teddiursa",
    "import": {
     "step": 16
    },
    "needs": [
-    "thief",
     "roar",
-    "shards-teddiursa",
-    "mbh-teddiurk",
-    "multi-td"
+    "reviver-td"
    ],
    "rec": "Dugtrio, or hidden ability Midnight Lycanroc (No Guard)"
   },
   {
-   "id": "jynxgigas",
+   "id": "support",
    "name": "Killer Support",
-   "made_from": "Jynx + Regigigas (step 17)",
+   "made_from": {
+    "$switch": [
+     {
+      "when": {
+       "partner": "skitty"
+      },
+      "value": "{mb} + Skitty (step 23)"
+     },
+     {
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": "{mb} + Regigigas (step 17)"
+     }
+    ]
+   },
    "moves": [
     "Entrainment",
     "Curse",
@@ -1535,156 +1574,141 @@
     "Disable"
    ],
    "ability": "Normalize",
-   "passive": "Psychic Surge",
-   "nature": "Timid",
-   "vitamins": "Carbos to Speed IV",
-   "items": {
-    "Lucky Egg": 60,
-    "Golden Egg": 15,
-    "Grip Claw": 5,
-    "Mini Black Hole": 1,
-    "Mystical Rock": 2,
-    "Soul Dew": 10
-   },
-   "group": "jynx",
-   "import": {
-    "step": 17,
-    "families": [
-     "SMOOCHUM",
-     "REGIGIGAS"
-    ]
-   },
-   "needs": [
-    "soul-rg",
-    "carbos-rg",
-    "shards-jynx",
-    "lucky-rg",
-    "golden-rg",
-    "mbh-jynx",
-    "grip",
-    "mystic"
-   ],
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "kyogre",
-   "name": "Killer Support",
-   "made_from": "Kyogre + Skitty (step 23)",
-   "moves": [
-    "Entrainment",
-    "Gastro Acid",
-    "Shed Tail",
-    "Curse"
-   ],
-   "ability": "Normalize",
    "passive": "Mold Breaker",
-   "nature": "Timid",
+   "nature": "Naive",
    "vitamins": "Carbos to Speed IV",
    "items": {
     "Lucky Egg": 60,
-    "Golden Egg": 15,
-    "Grip Claw": 5,
-    "Mini Black Hole": 1,
-    "Mystical Rock": 2,
+    "Golden Egg": 18,
     "Soul Dew": 10
    },
    "notes": [
-    "Water/Normal. Before the fusion Kyogre carries with Endure, Ice Beam, Water Pulse and Water Spout."
+    "Tera Ghost."
    ],
-   "group": "kyogre",
+   "group": "mb",
    "import": {
-    "step": 23,
-    "families": [
-     "KYOGRE",
-     "SKITTY"
-    ]
+    "step": {
+     "$switch": [
+      {
+       "when": {
+        "partner": "skitty"
+       },
+       "value": 23
+      },
+      {
+       "when": {
+        "partner": "regigigas"
+       },
+       "value": 17
+      }
+     ]
+    },
+    "families": {
+     "$switch": [
+      {
+       "when": {
+        "mb": "kyogre"
+       },
+       "value": [
+        "KYOGRE",
+        "SKITTY",
+        "REGIGIGAS"
+       ]
+      },
+      {
+       "when": {
+        "mb": "groudon"
+       },
+       "value": [
+        "GROUDON",
+        "SKITTY",
+        "REGIGIGAS"
+       ]
+      },
+      {
+       "when": {
+        "mb": "dracovish"
+       },
+       "value": [
+        "DRACOVISH",
+        "SKITTY",
+        "REGIGIGAS"
+       ]
+      },
+      {
+       "when": {
+        "mb": "samurott"
+       },
+       "value": [
+        "OSHAWOTT",
+        "SKITTY",
+        "REGIGIGAS"
+       ]
+      }
+     ]
+    }
    },
-   "needs": [
-    "soul-ky",
-    "carbos-ky",
-    "shards-ky",
-    "lucky-ky",
-    "golden-ky",
-    "mbh-ky",
-    "grip-ky",
-    "mystic-ky"
-   ],
-   "variant": {
-    "carry": "kyogre"
+   "needs": {
+    "$switch": [
+     {
+      "when": {
+       "partner": "skitty"
+      },
+      "value": [
+       "soul-ky",
+       "carbos-ky",
+       "shards-ky",
+       "lucky-ky",
+       "golden-ky"
+      ]
+     },
+     {
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": [
+       "soul-rg",
+       "carbos-rg",
+       "shards-ky",
+       "lucky-rg",
+       "golden-rg"
+      ]
+     }
+    ]
    }
   },
   {
-   "id": "yamazone",
+   "id": "killer",
    "name": "Boss Killer",
-   "made_from": "Yamask + Sturdy Pokémon (step 9)",
+   "made_from": "{sturdy} + Gholdengo (step 30)",
    "moves": [
-    "Heal Block",
+    "Nature's Madness or Ruination",
     "Leech Seed",
     "Soak",
-    "Salt Cure"
+    "Heal Block"
    ],
-   "ability": "Sturdy",
-   "passive": "Purifying Salt",
+   "ability": "Good as Gold",
+   "passive": "Sturdy",
    "nature": "Any",
    "vitamins": "none",
    "items": {
     "Leftovers": 4,
-    "Wide Lens": 2
+    "Shell Bell": 4
    },
    "notes": [
     "Threat: Slither Wing (Bug/Fighting, Scrappy passive) with Dual Wingbeat. Once Normalized, Dual Wingbeat hits Ghost through Scrappy, and its two hits get past Sturdy. Entrainment only replaces the active ability, so Slither Wing keeps Scrappy."
    ],
-   "group": "yamask",
+   "group": "killer",
    "import": {
-    "step": 9
+    "step": 30
    },
    "needs": [
     "lefto",
-    "wide-ym"
-   ],
-   "variant": {
-    "killer": "yamazone"
-   }
-  },
-  {
-   "id": "shedinja",
-   "name": "Boss Killer",
-   "made_from": "Shedinja split from Nincada (step 24)",
-   "moves": [
-    "Nature's Madness",
-    "Conversion",
-    "Heal Block",
-    "Salt Cure"
-   ],
-   "ability": "Wonder Guard",
-   "passive": "Magic Guard",
-   "nature": "Any",
-   "vitamins": "none",
-   "items": {
-    "Wide Lens": 2,
-    "Multi Lens": 2
-   },
-   "notes": [
-    "Bug/Ghost. Wonder Guard: only super effective hits connect.",
-    "Nature's Madness, Conversion and Salt Cure come from move tutors. Heal Block is learned at level 41.",
-    "Wonder Guard is the counter to Slither Wing's Dual Wingbeat. Use Conversion with Nature's Madness in slot 1 first, so Shedinja is pure Fairy and Dual Wingbeat is no longer super effective."
-   ],
-   "group": "shedinja",
-   "import": {
-    "step": 24
-   },
-   "needs": [
-    "wide-sh",
-    "multi-sh"
-   ],
-   "variant": {
-    "killer": "shedinja"
-   }
+    "shell-k"
+   ]
   }
  ],
- "spare_slots": "Two team slots are free for luck. The guide strongly recommends a Mold Breaker Pokémon holding Gastro Acid, mainly for Gholdengo, if Teddiursa lacks Core Enforcer.",
+ "spare_slots": "Two team slots are free for luck.",
  "playbook": [
   {
    "id": "standard-boss",
@@ -1700,18 +1724,7 @@
    "id": "complicated-boss",
    "title": "Complicated boss (Slither Wing is the main counter)",
    "steps": [
-    {
-     "text": "Use only Boss Killer and open with Leech Seed to heal to full each turn.",
-     "variant": {
-      "killer": "yamazone"
-     }
-    },
-    {
-     "text": "Shedinja's Wonder Guard counters Dual Wingbeat. Use Conversion first so it is pure Fairy and Dual Wingbeat cannot connect.",
-     "variant": {
-      "killer": "shedinja"
-     }
-    },
+    "Use only Boss Killer and open with Leech Seed to heal to full each turn.",
     "When the boss is about to die, let it knock out one of your Pokémon so Staller enters safely.",
     "If needed Staller can use Mat Block or Dark Void for a couple of turns."
    ]
@@ -1722,7 +1735,7 @@
    "steps": [
     "Roar away the Pokémon you do not want.",
     "Normalize the one you want to catch.",
-    "Throw regular balls. Ruination or Nature's Madness damages it, Dark Void puts it to sleep for better odds.",
+    "Throw regular balls. Boss Killer's Nature's Madness damages it, Dark Void puts it to sleep for better odds.",
     "Slow but saves Master Balls. Works on bosses too."
    ]
   },
@@ -1737,39 +1750,87 @@
  ],
  "groups": [
   {
-   "id": "regigigas",
-   "name": "Regigigas",
-   "family": [
-    "REGIGIGAS"
-   ],
-   "note": "Fuses into Killer Support at the end",
-   "sprite": "REGIGIGAS",
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "jynx",
-   "name": "Jynx",
-   "family": [
-    "SMOOCHUM"
-   ],
-   "note": "Smoochum line, becomes Killer Support",
-   "sprite": "JYNX",
-   "variant": {
-    "carry": "regigigas"
-   }
-  },
-  {
-   "id": "kyogre",
-   "name": "Kyogre",
-   "family": [
-    "KYOGRE"
-   ],
-   "note": "Carries the run, then fuses with Skitty into Killer Support",
-   "sprite": "KYOGRE",
-   "variant": {
-    "carry": "kyogre"
+   "id": "mb",
+   "name": "{mb}",
+   "family": {
+    "$switch": [
+     {
+      "when": {
+       "mb": "kyogre"
+      },
+      "value": [
+       "KYOGRE"
+      ]
+     },
+     {
+      "when": {
+       "mb": "groudon"
+      },
+      "value": [
+       "GROUDON"
+      ]
+     },
+     {
+      "when": {
+       "mb": "dracovish"
+      },
+      "value": [
+       "DRACOVISH"
+      ]
+     },
+     {
+      "when": {
+       "mb": "samurott"
+      },
+      "value": [
+       "OSHAWOTT"
+      ]
+     }
+    ]
+   },
+   "sprite": {
+    "$switch": [
+     {
+      "when": {
+       "mb": "kyogre"
+      },
+      "value": "KYOGRE"
+     },
+     {
+      "when": {
+       "mb": "groudon"
+      },
+      "value": "GROUDON"
+     },
+     {
+      "when": {
+       "mb": "dracovish"
+      },
+      "value": "DRACOVISH"
+     },
+     {
+      "when": {
+       "mb": "samurott"
+      },
+      "value": "HISUI_SAMUROTT"
+     }
+    ]
+   },
+   "note": {
+    "$switch": [
+     {
+      "when": {
+       "partner": "skitty"
+      },
+      "value": "Carries the run, then Skitty fuses onto it as Killer Support"
+     },
+     {
+      "when": {
+       "partner": "regigigas"
+      },
+      "value": "Learns the Killer Support moves, then Regigigas fuses onto it"
+     }
+    ]
    }
   },
   {
@@ -1778,10 +1839,22 @@
    "family": [
     "SKITTY"
    ],
-   "note": "Learns the Killer Support moves, then fuses onto Kyogre",
+   "note": "Learns the Killer Support moves, then fuses onto {mb}",
    "sprite": "SKITTY",
    "variant": {
-    "carry": "kyogre"
+    "partner": "skitty"
+   }
+  },
+  {
+   "id": "regigigas",
+   "name": "Regigigas",
+   "family": [
+    "REGIGIGAS"
+   ],
+   "note": "Carries the run, then fuses onto {mb} as Killer Support",
+   "sprite": "REGIGIGAS",
+   "variant": {
+    "partner": "regigigas"
    }
   },
   {
@@ -1803,28 +1876,158 @@
    "sprite": "TEDDIURSA"
   },
   {
-   "id": "yamask",
-   "name": "Yamask",
-   "family": [
-    "YAMASK"
-   ],
-   "note": "Becomes Boss Killer",
-   "sprite": "YAMASK",
-   "variant": {
-    "killer": "yamazone"
-   }
-  },
-  {
-   "id": "shedinja",
-   "name": "Shedinja",
-   "family": [
-    "NINCADA"
-   ],
-   "note": "Splits off Nincada, becomes Boss Killer",
-   "sprite": "SHEDINJA",
-   "variant": {
-    "killer": "shedinja"
-   }
+   "id": "killer",
+   "name": "{sturdy}",
+   "family": {
+    "$switch": [
+     {
+      "when": {
+       "sturdy": "diglett"
+      },
+      "value": [
+       "DIGLETT"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "alola_diglett"
+      },
+      "value": [
+       "ALOLA_DIGLETT"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "stonjourner"
+      },
+      "value": [
+       "STONJOURNER"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "phanpy"
+      },
+      "value": [
+       "PHANPY"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "drilbur"
+      },
+      "value": [
+       "DRILBUR"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "rockruff"
+      },
+      "value": [
+       "ROCKRUFF"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "omanyte"
+      },
+      "value": [
+       "OMANYTE"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "glimmet"
+      },
+      "value": [
+       "GLIMMET"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "minior"
+      },
+      "value": [
+       "MINIOR"
+      ]
+     },
+     {
+      "when": {
+       "sturdy": "sinistea"
+      },
+      "value": [
+       "SINISTEA"
+      ]
+     }
+    ]
+   },
+   "base_only": true,
+   "sprite": {
+    "$switch": [
+     {
+      "when": {
+       "sturdy": "diglett"
+      },
+      "value": "DUGTRIO"
+     },
+     {
+      "when": {
+       "sturdy": "alola_diglett"
+      },
+      "value": "ALOLA_DUGTRIO"
+     },
+     {
+      "when": {
+       "sturdy": "stonjourner"
+      },
+      "value": "STONJOURNER"
+     },
+     {
+      "when": {
+       "sturdy": "phanpy"
+      },
+      "value": "PHANPY"
+     },
+     {
+      "when": {
+       "sturdy": "drilbur"
+      },
+      "value": "EXCADRILL"
+     },
+     {
+      "when": {
+       "sturdy": "rockruff"
+      },
+      "value": "LYCANROC"
+     },
+     {
+      "when": {
+       "sturdy": "omanyte"
+      },
+      "value": "OMASTAR"
+     },
+     {
+      "when": {
+       "sturdy": "glimmet"
+      },
+      "value": "GLIMMET"
+     },
+     {
+      "when": {
+       "sturdy": "minior"
+      },
+      "value": "MINIOR"
+     },
+     {
+      "when": {
+       "sturdy": "sinistea"
+      },
+      "value": "SINISTEA"
+     }
+    ]
+   },
+   "note": "Becomes Boss Killer once Gholdengo fuses onto it"
   },
   {
    "id": "team",
@@ -1832,19 +2035,24 @@
    "family": []
   }
  ],
- "migrations": {
-  "i:mbh": [
-   "i:mbh-gouot",
-   "i:mbh-teddiurk",
-   "i:mbh-jynx"
-  ],
-  "i:shards": [
-   "i:shards-teddiursa",
-   "i:shards-jynx"
-  ]
- },
+ "migrations": {},
  "how_to_play": {
-  "intro": "First, Regigigas does all the fighting while you collect what your team needs. Then you switch to your final team, and most waves become quick double battles. You only really fight the bosses.",
+  "intro": {
+   "$switch": [
+    {
+     "when": {
+      "partner": "skitty"
+     },
+     "value": "First, {mb} does all the fighting while you collect what your team needs. Then you switch to your final team, and most waves become quick double battles. You only really fight the bosses."
+    },
+    {
+     "when": {
+      "partner": "regigigas"
+     },
+     "value": "First, Regigigas does all the fighting while you collect what your team needs. Then you switch to your final team, and most waves become quick double battles. You only really fight the bosses."
+    }
+   ]
+  },
   "phases": [
    {
     "id": "carry",
@@ -1859,18 +2067,45 @@
      "The run can feel slow at first. It gets faster once you do the first fusion ({dv} onto Pumpkaboo) and get the Lock Capsule."
     ],
     "variant": {
-     "carry": "regigigas"
+     "partner": "regigigas"
     }
    },
    {
     "id": "carry-ky",
-    "title": "Kyogre does the fighting",
+    "title": "{mb} does the fighting",
     "when": "Start of the run until step 23",
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     },
     "points": [
-     "Kyogre carries with Endure, Ice Beam, Water Pulse and Water Spout.",
+     {
+      "$switch": [
+       {
+        "when": {
+         "mb": "kyogre"
+        },
+        "value": "Kyogre carries with Endure, Ice Beam, Water Pulse and Water Spout."
+       },
+       {
+        "when": {
+         "mb": "groudon"
+        },
+        "value": "Suggested carry moves: High Horsepower (TM) for one target and Precipice Blades (Lv 75) to hit both enemies. Use the Rock Slide TM until then. These are suggestions only. The build only cares about the running moves."
+       },
+       {
+        "when": {
+         "mb": "dracovish"
+        },
+        "value": "Suggested carry moves: Fishious Rend (Lv 63) for one target and the Rock Slide TM to hit both enemies. These are suggestions only. The build only cares about the running moves."
+       },
+       {
+        "when": {
+         "mb": "samurott"
+        },
+        "value": "Suggested carry moves: Razor Shell (Lv 18) for one target and the Snarl TM to hit both enemies. These are suggestions only. The build only cares about the running moves."
+       }
+      ]
+     },
      "Put Pumpkaboo second in your team. Its Illuminate passive brings more double battles. Keep one Lure going too, so normal waves are double battles.",
      "The run can feel slow at first. It gets faster once you do the first fusion ({dv} onto Pumpkaboo) and get the Lock Capsule."
     ]
@@ -1887,7 +2122,7 @@
      {
       "text": "You only need Land's Wrath and Darkest Lariat in this part, while Regigigas is still doing the fighting.",
       "variant": {
-       "carry": "regigigas"
+       "partner": "regigigas"
       }
      }
     ]
@@ -1897,13 +2132,12 @@
     "title": "The big switch",
     "when": "Splicing step 17",
     "points": [
-     "Fuse Regigigas onto Jynx, teach it Entrainment, and keep them fused. This is Killer Support.",
+     "Fuse Regigigas onto {mb} and keep them fused. This is Killer Support: Normalize from Regigigas's hidden ability, Mold Breaker passive from {mb}.",
      "After this, Regigigas can't sweep with Normalize anymore. That's OK, because your new team takes over.",
-     "You could keep Land's Wrath on it, but the four Killer Support moves are more important.",
-     "If you do want to keep Land's Wrath, keep it when you fuse. After the fusion you can't get Regigigas's egg moves back, because Jynx is the main Pokémon and only Jynx's egg moves can be relearned."
+     "Its running moves are Entrainment (on Regigigas, step 4) and Gastro Acid, Curse and Disable (on {mb}, steps 10 and 11). You could keep Land's Wrath instead of one of them, but the four Killer Support moves are more important."
     ],
     "variant": {
-     "carry": "regigigas"
+     "partner": "regigigas"
     }
    },
    {
@@ -1911,17 +2145,32 @@
     "title": "The big switch",
     "when": "Splicing step 23",
     "variant": {
-     "carry": "kyogre"
+     "partner": "skitty"
     },
     "points": [
-     "Fuse Skitty onto Kyogre and keep them fused. This is Killer Support: Water/Normal, Normalize, passive Mold Breaker.",
-     "Its running moves are Entrainment, Gastro Acid, Shed Tail and Curse, spliced onto Skitty in steps 18 to 21, so Kyogre keeps carrying until this fusion."
+     "Fuse Skitty onto {mb} and keep them fused. This is Killer Support: Normalize from Skitty, passive Mold Breaker from {mb}.",
+     "Its running moves are Entrainment, Gastro Acid, Curse and Disable, spliced onto Skitty in steps 18 to 21, so {mb} keeps carrying until this fusion."
     ]
    },
    {
     "id": "loop",
     "title": "Running through waves",
-    "when": "After step 17",
+    "when": {
+     "$switch": [
+      {
+       "when": {
+        "partner": "skitty"
+       },
+       "value": "After step 23"
+      },
+      {
+       "when": {
+        "partner": "regigigas"
+       },
+       "value": "After step 17"
+      }
+     ]
+    },
     "points": [
      "Staller and Runner take care of normal waves.",
      "Lure abilities make double battles more likely. Staller and Runner each get one from their fusion (any lure ability: Illuminate, Arena Trap, No Guard or Commander), and Staller also has Illuminate as its passive.",
@@ -1936,47 +2185,138 @@
   ]
  },
  "variants": {
-  "carry": {
-   "label": "Carry",
+  "partner": {
+   "label": "Normalize partner",
+   "plan_pick": "only",
    "options": [
+    {
+     "id": "skitty",
+     "name": "Skitty",
+     "detect": [
+      "SKITTY"
+     ]
+    },
     {
      "id": "regigigas",
      "name": "Regigigas",
      "detect": [
-      "REGIGIGAS",
-      "SMOOCHUM"
-     ]
-    },
-    {
-     "id": "kyogre",
-     "name": "Kyogre/Skitty",
-     "detect": [
-      "KYOGRE",
-      "SKITTY"
+      "REGIGIGAS"
      ]
     }
-   ],
-   "plan_pick": "only"
+   ]
   },
-  "killer": {
-   "label": "Boss killer",
+  "mb": {
+   "label": "Mold Breaker base",
+   "plan_pick": "first",
+   "plan_need": "its Mold Breaker passive unlocked",
    "options": [
     {
-     "id": "yamazone",
-     "name": "Yamazone",
+     "id": "kyogre",
+     "name": "Kyogre",
      "detect": [
-      "YAMASK"
+      "KYOGRE"
      ]
     },
     {
-     "id": "shedinja",
-     "name": "Shedinja",
+     "id": "groudon",
+     "name": "Groudon",
      "detect": [
-      "NINCADA"
+      "GROUDON"
+     ]
+    },
+    {
+     "id": "dracovish",
+     "name": "Dracovish",
+     "detect": [
+      "DRACOVISH"
+     ]
+    },
+    {
+     "id": "samurott",
+     "name": "Hisuian Samurott",
+     "detect": [
+      "OSHAWOTT"
      ]
     }
-   ],
-   "plan_pick": "only"
+   ]
+  },
+  "sturdy": {
+   "label": "Boss Killer base",
+   "plan_pick": "first",
+   "plan_need": "its Sturdy passive unlocked",
+   "detect_base": true,
+   "options": [
+    {
+     "id": "diglett",
+     "name": "Dugtrio",
+     "detect": [
+      "DIGLETT"
+     ]
+    },
+    {
+     "id": "alola_diglett",
+     "name": "Alolan Dugtrio",
+     "detect": [
+      "ALOLA_DIGLETT"
+     ]
+    },
+    {
+     "id": "stonjourner",
+     "name": "Stonjourner",
+     "detect": [
+      "STONJOURNER"
+     ]
+    },
+    {
+     "id": "phanpy",
+     "name": "Phanpy",
+     "detect": [
+      "PHANPY"
+     ]
+    },
+    {
+     "id": "drilbur",
+     "name": "Excadrill",
+     "detect": [
+      "DRILBUR"
+     ]
+    },
+    {
+     "id": "rockruff",
+     "name": "Midday Lycanroc",
+     "detect": [
+      "ROCKRUFF"
+     ]
+    },
+    {
+     "id": "omanyte",
+     "name": "Omastar",
+     "detect": [
+      "OMANYTE"
+     ]
+    },
+    {
+     "id": "glimmet",
+     "name": "Glimmet",
+     "detect": [
+      "GLIMMET"
+     ]
+    },
+    {
+     "id": "minior",
+     "name": "Minior",
+     "detect": [
+      "MINIOR"
+     ]
+    },
+    {
+     "id": "sinistea",
+     "name": "Antique Sinistea",
+     "detect": [
+      "SINISTEA"
+     ]
+    }
+   ]
   },
   "dv": {
    "label": "Dark Void starter",
@@ -2033,13 +2373,22 @@
   "note": "Draft until Lucy or Grex confirm.",
   "entries": [
    {
-    "build": "shedinja",
-    "text": "Nature's Madness in slot 1. Conversion copies the type of the first move slot, so Shedinja becomes pure Fairy. That removes most weaknesses and keeps Wonder Guard useful."
-   },
-   {
     "build": "*",
     "text": "Any order."
    }
   ]
- }
+ },
+ "variant_excludes": [
+  {
+   "when": {
+    "partner": "regigigas",
+    "mb": [
+     "kyogre",
+     "groudon"
+    ]
+   },
+   "change": "mb",
+   "why": "Over the 15 point limit with Regigigas, even with every cost reduction"
+  }
+ ]
 }

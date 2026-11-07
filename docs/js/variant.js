@@ -1,5 +1,5 @@
-// Build variants (carry: Regigigas or Kyogre/Skitty, boss killer: Yamazone or Shedinja).
-// Any guide entry with a `variant` field ({carry: "kyogre"}, {killer: "shedinja"}, ...) only shows
+// Build variants (Mold Breaker base, Normalize partner, Boss Killer base, Dark Void starter).
+// Any guide entry with a `variant` field ({mb: "kyogre"}, {partner: ["skitty"]}, ...) only shows
 // when the chosen variant matches; entries without one always show. Entries of the form
 // {text, variant} inside string lists become plain strings once kept.
 // Dependency-free; used by the server (import) and the browser (render).
@@ -14,13 +14,29 @@
     Object.keys((guide && guide.variants) || {}).forEach(function (k) { out[k] = guide.variants[k].options[0].id; });
     return out;
   }
-  // keep only known option ids, fill the rest with defaults
+  // why a combination is not allowed (guide.variant_excludes: [{when, change, why}]), or null
+  function excludedBy(guide, v) {
+    return ((guide && guide.variant_excludes) || []).filter(function (r) { return when(r.when, v); })[0] || null;
+  }
+  // would picking option `id` for key `k` (keeping the rest of v) be excluded? -> reason or null
+  function excluded(guide, v, k, id) {
+    var t = {}; Object.keys(v).forEach(function (x) { t[x] = v[x]; }); t[k] = id;
+    var r = excludedBy(guide, t);
+    return r && r.change === k ? r.why : null;
+  }
+  // keep only known option ids, fill the rest with defaults; an excluded mix moves the rule's
+  // `change` key to its first allowed option
   function normalize(guide, v) {
     var out = defaults(guide);
     Object.keys(out).forEach(function (k) {
       var ok = guide.variants[k].options.some(function (o) { return o.id === (v && v[k]); });
       if (ok) out[k] = v[k];
     });
+    for (var guard = 0, r; (r = excludedBy(guide, out)) && guard < 10; guard++) {
+      var free = guide.variants[r.change].options.filter(function (o) { return !excluded(guide, out, r.change, o.id); })[0];
+      if (!free) break;
+      out[r.change] = free.id;
+    }
     return out;
   }
   // a value can be one option id or a list of them
@@ -69,5 +85,5 @@
     return walk(guide, n, names);
   }
 
-  return { applyVariant: applyVariant, normalize: normalize, defaults: defaults };
+  return { applyVariant: applyVariant, normalize: normalize, defaults: defaults, excluded: excluded, when: when };
 });

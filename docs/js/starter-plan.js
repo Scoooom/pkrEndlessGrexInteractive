@@ -60,9 +60,14 @@
       if (!have) r.blockers.push((plan.ability === 2 ? "hidden ability " : "ability ") + nice(abil[plan.ability]) + " not unlocked");
     }
     // passive
-    var passive = sp.passives[form] || sp.passives[0];
-    if (plan.passive && passive) {
+    // the passive depends on the form the build uses (Midday Lycanroc has Sturdy, Rockruff has Pickup);
+    // the unlock itself is one bit on the starter
+    var po = plan.passive_of, psp = po ? info.species[po.species] : sp, pform = po ? po.form || 0 : form;
+    var passive = psp.passives[pform] || psp.passives[0];
+    if ((plan.passive || plan.need_passive) && passive) {
       r.passive = { name: nice(passive), unlocked: !!(s.passiveAttr & 1) };
+      // the build depends on it (Mold Breaker on Killer Support's base, Sturdy on the Boss Killer)
+      if (plan.need_passive && !r.passive.unlocked) r.blockers.push("passive " + nice(passive) + " not unlocked");
     }
     // nature: first of the wanted ones that is unlocked
     var natNum = {};
@@ -89,6 +94,7 @@
   function planStarter(s, save, info) {
     var plan = s.plan, r = planSpecies(plan.species, plan, Array.isArray(plan.moves) ? plan.moves : [], save, info);
     r.id = s.id;
+    if (typeof s.name === "string") r.name = s.name;   // the card's name ("Alolan Diglett", "Oshawott (Hisuian Samurott)")
     return r;
   }
 
@@ -140,13 +146,25 @@
   // Each variant with `plan_pick` gets a recommendation:
   //   "only":  the one option whose starters are all unlocked; with none or several, the current choice stays
   //   "first": the first option (in listed order) whose starters are all unlocked
+  function condOk(cond, v) {
+    return Object.keys(cond).every(function (k) { return Array.isArray(cond[k]) ? cond[k].indexOf(v[k]) >= 0 : v[k] === cond[k]; });
+  }
+  // the option is ruled out (guide.variant_excludes) by the picks made so far
+  function ruledOut(guide, pick, k, id) {
+    return ((guide.variant_excludes) || []).filter(function (r) {
+      if (r.change !== k) return false;
+      var t = {}; Object.keys(pick).forEach(function (x) { t[x] = pick[x]; }); t[k] = id;
+      return condOk(r.when, t);
+    })[0] || null;
+  }
   function choose(guide, save, info, current) {
     var plans = {};
     guide.starters.forEach(function (s) { if (s.plan) plans[s.id] = planStarter(s, save, info); });
     var pick = {}, status = {};
+    Object.keys(guide.variants || {}).forEach(function (k) { pick[k] = current[k]; });
+    // keys are decided in the order guide.variants lists them, so an earlier pick can rule out later options
     Object.keys(guide.variants || {}).forEach(function (k) {
       var V = guide.variants[k];
-      pick[k] = current[k];
       if (!V.plan_pick) return;
       var st = status[k] = {};
       V.options.forEach(function (o) {
@@ -156,6 +174,8 @@
         });
         var bad = mine.filter(function (s) { return plans[s.id].blockers.length; });
         st[o.id] = { ok: !bad.length, why: bad.map(function (s) { return plans[s.id].name + ": " + plans[s.id].blockers.join(", "); }) };
+        var ex = ruledOut(guide, pick, k, o.id);
+        if (ex) { st[o.id].ok = false; st[o.id].excluded = true; st[o.id].why = [ex.why]; }
       });
       var ok = V.options.filter(function (o) { return st[o.id].ok; });
       if (V.plan_pick === "only" && ok.length === 1) pick[k] = ok[0].id;

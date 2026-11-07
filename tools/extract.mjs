@@ -98,6 +98,9 @@ function targetFor(step) {
   const p = step.partner;
   if (/^Wild .*with a lure ability/.test(p)) return { kind: "ability", any: (step.import.ability_any || []).map((a) => [a]) };
   if (/^Wild .*with (Sturdy|No Guard)/.test(p)) return { kind: "ability", any: [[moveId(p.match(/with ([A-Za-z ]+?)(?: \(|$)/)[1])]] };
+  // "Wild Gholdengo": that species itself
+  const sp1 = p.match(/^Wild ([A-Z][a-z]+)$/);
+  if (sp1 && species[sp1[1].toUpperCase()]) return { kind: "species", any: [[sp1[1].toUpperCase()]] };
   const m = p.match(/^Wild (.+?) users?$/);
   if (!m) return null;
   // "A and B" = both on the same Pokémon, "A or B" = either
@@ -117,7 +120,10 @@ function findBiomes(t) {
       const sp = species[c.id];
       for (const need of t.any) {
         let ok, detail;
-        if (t.kind === "move") {
+        if (t.kind === "species") {
+          ok = c.id === need[0];
+          detail = "";
+        } else if (t.kind === "move") {
           ok = need.every((mv) => sp.moves[mv] !== undefined);
           detail = ok ? need.map((mv) => nice(mv) + " " + (typeof sp.moves[mv] === "number" ? "Lv " + sp.moves[mv] : sp.moves[mv] === "evo" ? "on evolution" : "relearn")).join(", ") : "";
         } else {
@@ -193,7 +199,7 @@ for (const [n, s] of Object.entries({ ...result.steps, ...result.items })) conso
 // ---------- starter data for the system-save starter planner (only the species the guide's starter plans name)
 const STARTERS_OUT = process.argv[6] || path.join(path.dirname(IDS_OUT), "starters.json");
 const want = new Set();
-for (const s of guide.starters) if (s.plan) { want.add(s.plan.species); (s.plan.alts || []).forEach((a) => want.add(a)); }
+for (const s of guide.starters) if (s.plan) { want.add(s.plan.species); if (s.plan.passive_of) want.add(s.plan.passive_of.species); }
 const speciesNum = Object.fromEntries(Object.entries(parseEnum("src/enums/species-id.ts")).map(([n, id]) => [id, Number(n)]));
 const eggText = fs.readFileSync(path.join(SRC, "src/data/balance/moves/egg-moves.ts"), "utf8");
 const starterInfo = {};
