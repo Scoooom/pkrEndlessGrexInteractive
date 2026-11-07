@@ -1364,6 +1364,9 @@
     "Leftovers": 4,
     "Wide Lens": 2
    },
+   "notes": [
+    "Threat: Slither Wing (Bug/Fighting, Scrappy passive) with Dual Wingbeat. Once Normalized, Dual Wingbeat hits Ghost through Scrappy, and its two hits get past Sturdy. Entrainment only replaces the active ability, so Slither Wing keeps Scrappy."
+   ],
    "group": "yamask",
    "import": {
     "step": 9
