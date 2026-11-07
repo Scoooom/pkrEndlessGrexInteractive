@@ -228,38 +228,65 @@
     }).join("") + '</div>';
   }
   // ---------- starter plan (from a system save)
-  function planHtml(g) {
+  function optName(k, id) { var o = rawGuide.variants[k].options.filter(function (x) { return x.id === id; })[0]; return o ? o.name : id; }
+  function joinOr(a) { return a.length > 1 ? a.slice(0, -1).join(", ") + " or " + a[a.length - 1] : a[0] || ""; }
+  // what the save supports: the recommended build, its starter plans, readiness, and a line per choice
+  function planFor(save, info) {
+    var c = window.EndlessStarterPlan.choose(rawGuide, save, info, variant);
+    var g = window.EndlessVariant.applyVariant(rawGuide, c.pick);
+    var rows = window.EndlessStarterPlan.planBuild(g.starters, save, info);
+    var lines = [];
+    Object.keys(c.status).forEach(function (k) {
+      var V = rawGuide.variants[k], st = c.status[k], ok = V.options.filter(function (o) { return st[o.id].ok; });
+      var whyNot = function (list) { return list.map(function (o) { return o.name + " (" + st[o.id].why.map(function (w) { return w.indexOf(o.name + ": ") === 0 ? w.slice(o.name.length + 2) : w; }).join("; ") + ")"; }).join(", "); };
+      var txt;
+      if (V.plan_pick === "only") {
+        txt = ok.length === V.options.length ? "both have their starters unlocked, the toggle in Start here picks."
+          : ok.length === 1 ? optName(k, c.pick[k]) + ", the only one with its starters unlocked. Not " + whyNot(V.options.filter(function (o) { return !st[o.id].ok; })) + "."
+          : "neither has its starters unlocked yet: " + whyNot(V.options) + ".";
+      } else {
+        var skipped = V.options.slice(0, V.options.indexOf(ok[0]));
+        txt = ok.length ? optName(k, c.pick[k]) + (skipped.length ? ", since " + whyNot(skipped) : "") + "."
+          : "none has it yet. Any of " + joinOr(V.options.map(function (o) { return o.name; })) + " works.";
+        // nobody can do it: the blocked starter's line says the others would do too
+        if (!ok.length) rows.forEach(function (p) {
+          var s = g.starters.filter(function (x) { return x.id === p.id; })[0];
+          if (s && s.variant && s.variant[k] && p.blockers.length)
+            p.alt_text = "or use " + joinOr(V.options.filter(function (o) { return o.id !== c.pick[k]; }).map(function (o) { return o.name; })) + (V.plan_need ? " with " + V.plan_need : "");
+        });
+      }
+      lines.push({ label: V.label, text: txt });
+    });
+    var same = Object.keys(c.pick).every(function (k) { return c.pick[k] === variant[k]; });
+    return { pick: c.pick, g: g, rows: rows, lines: lines, same: same, rd: window.EndlessStarterPlan.readiness(rows, info) };
+  }
+  function planHtml() {
     if (!planSave || !starterInfo) return "";
-    var r = window.EndlessStarterPlan.planAll(rawGuide, planSave, starterInfo);
+    var P = planFor(planSave, starterInfo), g = P.g, rd = P.rd, total = rd.total;
     var when = planSave.saved ? new Date(planSave.saved).toLocaleString() : "";
-    var c = r.carry, names = rawGuide.variants.carry.options;
-    var okNames = names.filter(function (o) { return c[o.id] && c[o.id].ok; });
-    var carryText = okNames.length === names.length ? "Both carry options have their starters unlocked. Pick one with the Carry toggle in Start here."
-      : okNames.length === 1 ? "Only " + okNames[0].name + " has its starters unlocked, so the page uses it. " + names.filter(function (o) { return !c[o.id].ok; }).map(function (o) { return o.name + ": " + c[o.id].why.join("; "); }).join(". ") + "."
-      : "Neither carry option has its starters unlocked yet. " + names.map(function (o) { return o.name + ": " + c[o.id].why.join("; "); }).join(". ") + ".";
-    var rows = g.starters.map(function (s) { return r.starters[s.id]; }).filter(Boolean);
-    var rd = window.EndlessStarterPlan.readiness(rows, starterInfo), total = rd.total;
     function yes(b) { return b ? ' <span class="pl-ok">unlocked</span>' : ' <span class="pl-bad">locked</span>'; }
-    var body = rows.map(function (p) {
+    var body = P.rows.map(function (p) {
       var s = g.starters.filter(function (x) { return x.id === p.id; })[0];
-      var who = esc(p.name) + (p.instead_of ? ' <small>instead of ' + esc(p.instead_of) + '</small>' : '');
-      // no requirement from the plan: show the guide's own text (alternatives have none, so "Any")
-      var ab = p.ability ? esc(p.ability.name) + (p.ability.hidden ? " (hidden)" : "") + yes(p.ability.unlocked) : !p.caught ? "" : p.instead_of ? "Any" : esc(s.ability);
-      var pas = p.passive ? esc(p.passive.name) + (p.passive.unlocked ? ' <span class="pl-ok">turn on</span>' : ' <span class="pl-bad">locked</span>') : !p.caught ? "" : p.instead_of ? "Not needed" : esc(s.passive);
+      var ab = p.ability ? esc(p.ability.name) + (p.ability.hidden ? " (hidden)" : "") + yes(p.ability.unlocked) : !p.caught ? "" : esc(s.ability);
+      var pas = p.passive ? esc(p.passive.name) + (p.passive.unlocked ? ' <span class="pl-ok">turn on</span>' : ' <span class="pl-bad">locked</span>') : !p.caught ? "" : esc(s.passive);
       var nat = !p.caught ? "" : p.nature ? (p.nature.pick ? "<b>" + esc(p.nature.pick) + "</b>" + (p.nature.wanted.length > 1 ? '<small>any of ' + esc(p.nature.wanted.join(", ")) + '</small>' : '')
         : '<span class="pl-bad">' + esc(p.nature.wanted.join(", ")) + ' locked</span><small>any nature works for now</small>') : "Any";
       var mv = !p.moves ? "" : (p.moves.pick.length ? "<b>" + esc(p.moves.pick.join(", ")) + "</b>" : "") +
         (p.moves.missing.length ? '<span class="pl-bad">' + (p.moves.pick.length ? "; " : "") + esc(p.moves.missing.join(", ")) + ' locked</span>' : "") +
         (p.moves.other.length ? '<small>' + (p.moves.pick.length || p.moves.missing.length ? "Rest: any of " : "Any of ") + esc(p.moves.other.join(", ")) + '</small>' : "");
       var msgs = p.blockers.map(function (x) { return '<span class="pl-bad">' + esc(x) + '</span>'; }).concat(p.notes.map(function (x) { return '<span class="pl-note">' + esc(x) + '</span>'; }));
-      return '<tr><td><div class="pl-mon">' + spr(p.instead_of ? p.species : s && s.sprite, "s-row") + '<span>' + who + (msgs.length ? '<small>' + msgs.join("<br>") + '</small>' : '') + '</span></div></td>' +
+      return '<tr><td><div class="pl-mon">' + spr(s && s.sprite, "s-row") + '<span>' + esc(p.name) + (msgs.length ? '<small>' + msgs.join("<br>") + '</small>' : '') + '</span></div></td>' +
         '<td>' + ab + '</td><td>' + pas + '</td><td>' + nat + '</td><td>' + mv + '</td><td class="mono">' + p.cost + '</td></tr>';
     }).join("");
     return '<div class="card plan" id="starter-plan"><div class="pl-head"><h3>From your save</h3>' + (when ? '<span class="muted">saved ' + esc(when) + '</span>' : '') +
       '<button type="button" class="reset" id="plan-clear">Clear</button></div>' +
-      '<p class="pl-carry">' + esc(carryText) + '</p>' + readyHtml(rd) +
+      '<ul class="pl-choices">' + P.lines.map(function (l) { return '<li><b>' + esc(l.label) + ':</b> ' + esc(l.text) + '</li>'; }).join("") + '</ul>' +
+      (P.same ? '<p class="pl-using">The checklist uses these starters.</p>'
+        : '<div class="pl-use"><span>The checklist is set up for other starters (' + esc(Object.keys(P.pick).filter(function (k) { return P.pick[k] !== variant[k]; }).map(function (k) { return rawGuide.variants[k].label + ": " + optName(k, variant[k]); }).join(", ")) + ').</span>' +
+          '<button type="button" class="reset primary" id="plan-use">Use these starters</button></div>') +
+      readyHtml(rd) +
       '<div class="pl-scroll"><table class="pl-table"><thead><tr><th>Starter</th><th>Ability</th><th>Passive</th><th>Nature</th><th>Starting moves</th><th>Pts</th></tr></thead><tbody>' + body + '</tbody>' +
-      '<tfoot><tr><td colspan="5">Total' + (total > r.limit ? ' <span class="pl-bad">over the ' + r.limit + ' point Endless limit</span>' : '') + '</td><td class="mono">' + total + ' / ' + r.limit + '</td></tr></tfoot></table></div></div>';
+      '<tfoot><tr><td colspan="5">Total' + (total > rd.limit ? ' <span class="pl-bad">over the ' + rd.limit + ' point Endless limit</span>' : '') + '</td><td class="mono">' + total + ' / ' + rd.limit + '</td></tr></tfoot></table></div></div>';
   }
   function readyHtml(rd) {
     if (rd.ready) return '<p class="pl-ready ok">You are ready to start this build. Pick these on the starter screen.</p>';
@@ -295,7 +322,7 @@
 
     // "Start here": how to use the guide, what to do next in each stage, and the trade-offs
     h += '<section id="start" data-tab="start"><div class="sec-head"><h2>Start here</h2></div>' +
-      '<p class="sec-note">Unlock the starters before the run. Once it starts, Items, Splicing and Final fusions are all worked on at the same time. Items are rewards, so take them whenever they show up. For splicing, do the first fusion (Smeargle onto Pumpkaboo) first, then whatever is rarest or available where you are. Use the I&#39;m in box at the top whenever you reach a new biome to see what you can pick up there. Tick things off as you go, or import your save to fill everything in at once.</p>' +
+      '<p class="sec-note">Unlock the starters before the run. Once it starts, Items, Splicing and Final fusions are all worked on at the same time. Items are rewards, so take them whenever they show up. For splicing, do the first fusion (' + esc(optName("dv", variant.dv)) + ' onto Pumpkaboo) first, then whatever is rarest or available where you are. Use the I&#39;m in box at the top whenever you reach a new biome to see what you can pick up there. Tick things off as you go, or import your save to fill everything in at once.</p>' +
       '<h3 class="sub-h">Your build</h3>' + variantPicker(g) +
       '<div class="stages" id="stages"></div>' +
       '<h3 class="sub-h">Before you commit</h3><div class="two">' +
@@ -314,7 +341,7 @@
 
     // starters
     h += '<section id="starters" data-tab="starters"><div class="sec-head"><h2>Starters</h2><span class="mono" id="c-starters"></span></div>' +
-      '<p class="sec-note">Check each one once it is unlocked with the right ability and nature. Import your system save (PokeRogue: Manage Data, Export Data) to see what to pick on the starter screen.</p>' + planHtml(g) + '<div class="grid">';
+      '<p class="sec-note">Check each one once it is unlocked with the right ability and nature. Import your system save (PokeRogue: Manage Data, Export Data) to see what to pick on the starter screen.</p>' + planHtml() + '<div class="grid">';
     g.starters.forEach(function (s) {
       var k = "s:" + s.id; reg("starters", k, 1, "Starter · " + s.name);
       var extra = "";
@@ -459,7 +486,7 @@
       var phase = i === 0 ? '<h3 class="phase">Before the run</h3>' : i === 1 ? '<h3 class="phase">During the run, all at the same time</h3>' : '';
       return phase + '<a class="stage' + (d === n ? " complete" : "") + (i > 0 ? " parallel" : "") + '" href="#' + sec.id + '">' +
         '<span class="st-num">' + (d === n ? "✓" : i === 0 ? 1 : 2) + '</span>' +
-        '<span class="st-body"><b>' + esc(sec.label) + '</b><span class="st-blurb">' + esc(STAGE_BLURB[sec.id] || "") + '</span>' +
+        '<span class="st-body"><b>' + esc(sec.label) + '</b><span class="st-blurb">' + esc((STAGE_BLURB[sec.id] || "").replace("{dv}", optName("dv", variant.dv))) + '</span>' +
         '<span class="st-next">' + (d === n ? "Finished" : "Next: " + esc(nx.text)) + '</span></span>' +
         '<span class="st-count mono">' + d + " / " + n + '</span></a>';
     }).join("") +
@@ -471,7 +498,7 @@
   var STAGE_BLURB = {
     starters: "Unlock the starters with the right abilities and natures.",
     items: "Held items, TMs and vitamins for each Pokémon. Grab them whenever they show up.",
-    splicing: "Always start with Smeargle onto Pumpkaboo. After that, fuse in whatever order your biomes allow.",
+    splicing: "Always start with {dv} onto Pumpkaboo. After that, fuse in whatever order your biomes allow.",
     builds: "What each finished fusion needs: moves, items and its keep-fused step.",
   };
 
@@ -680,6 +707,7 @@
     if (t.id === "here-fold") { hereFolded = !hereFolded; updateHere(); return; }
     if (t.closest("#import-btn")) { $("import-file").value = ""; $("import-file").click(); return; }
     if (t.id === "import-cancel") { closeImport(); return; }
+    if (t.id === "plan-use" && planSave && starterInfo) { useStarters(planFor(planSave, starterInfo).pick); var y3 = window.scrollY; render(); update(); window.scrollTo(0, y3); return; }
     if (t.id === "plan-clear") { planSave = null; savePlan(); var y2 = window.scrollY; render(); update(); window.scrollTo(0, y2); return; }
     if (t.id === "import-apply") { applyImport(); return; }
     // in-page links: offset by the sticky header's real height (it grows when the biome panel is open)
@@ -756,8 +784,8 @@
   // the save's party decides the build where it is clear; the page's toggle fills the rest.
   // Values are capped at what the guide for that build needs.
   function importSession(session, ids) {
-    var found = window.EndlessImport.detectVariant(session, ids);
-    var v = { carry: found.carry || variant.carry, killer: found.killer || variant.killer };
+    var found = window.EndlessImport.detectVariant(session, ids, rawGuide), v = {};
+    Object.keys(rawGuide.variants).forEach(function (k) { v[k] = found[k] || variant[k]; });
     var g = window.EndlessVariant.applyVariant(rawGuide, v);
     var cap = {};
     g.starters.forEach(function (s) { cap["s:" + s.id] = 1; });
@@ -811,25 +839,23 @@
   var pendingPlan = null;
   function showPlanPreview(sys, info) {
     starterInfo = info;
-    var save = window.EndlessStarterPlan.readSystem(sys, info);
-    var r = window.EndlessStarterPlan.planAll(rawGuide, save, info);
-    pendingPlan = { save: save, carry: r.carryPick }; importValues = null;
-    var g = window.EndlessVariant.applyVariant(rawGuide, r.carryPick ? { carry: r.carryPick, killer: variant.killer } : variant);
-    var mine = g.starters.map(function (s) { return r.starters[s.id]; }).filter(Boolean);
-    var rd = window.EndlessStarterPlan.readiness(mine, info);
-    var opts = rawGuide.variants.carry.options, ok = opts.filter(function (o) { return r.carry[o.id].ok; });
+    var save = window.EndlessStarterPlan.readSystem(sys, info), P = planFor(save, info);
+    pendingPlan = { save: save, pick: P.pick }; importValues = null;
     $("import-body").innerHTML =
-      '<p class="imp-sum">System save' + (save.saved ? ' from <b>' + esc(new Date(save.saved).toLocaleString()) + '</b>' : '') + '. This fills in the starter plan only; your checklist is not changed.</p>' +
-      '<p class="imp-sum">Carry: ' + (ok.length === opts.length ? 'both <b>' + opts.map(function (o) { return esc(o.name); }).join("</b> and <b>") + '</b> are unlocked, the Carry toggle picks.'
-        : ok.length === 1 ? '<b>' + esc(ok[0].name) + '</b> only (' + esc(opts.filter(function (o) { return !r.carry[o.id].ok; }).map(function (o) { return o.name + ": " + r.carry[o.id].why.join("; "); }).join(". ")) + '). The page will switch to it.'
-        : '<b class="down">neither is ready</b> (' + esc(opts.map(function (o) { return o.name + ": " + r.carry[o.id].why.join("; "); }).join(". ")) + ').') + '</p>' +
-      '<p class="imp-sum">' + (rd.ready ? '<b>Ready to start this build.</b>' : '<b class="down">Not ready to run this guide yet</b>: ' + rd.need.length + ' unlock' + (rd.need.length === 1 ? '' : 's') + ' needed.') + ' Apply to see the plan in Starters.</p>';
+      '<p class="imp-sum">System save' + (save.saved ? ' from <b>' + esc(new Date(save.saved).toLocaleString()) + '</b>' : '') + '. This fills in the starter plan only; your checklist progress is not changed.</p>' +
+      P.lines.map(function (l) { return '<p class="imp-sum"><b>' + esc(l.label) + ':</b> ' + esc(l.text) + '</p>'; }).join("") +
+      '<p class="imp-sum">' + (P.rd.ready ? '<b>Ready to start this build.</b>' : '<b class="down">Not ready to run this guide yet</b>: ' + P.rd.need.length + ' unlock' + (P.rd.need.length === 1 ? '' : 's') + ' needed.') +
+      ' Apply switches the checklist to these starters and shows the plan in Starters.</p>';
     $("import-apply").disabled = false;
+  }
+  function useStarters(pick) {
+    Object.keys(pick).forEach(function (k) { variant[k] = pick[k]; });
+    saveVariant();
   }
   function applyImport() {
     if (pendingPlan) {
       planSave = pendingPlan.save; savePlan();
-      if (pendingPlan.carry) { variant.carry = pendingPlan.carry; saveVariant(); }
+      useStarters(pendingPlan.pick);
       pendingPlan = null; preImportVariant = null; closeImport();
       render(); update(); showTab("starters", false); scrollToEl($("starter-plan"), false);
       return;

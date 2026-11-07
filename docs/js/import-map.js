@@ -175,9 +175,10 @@
     return { values: values, reasons: reasons, summary: summary };
   }
 
-  // which build the save is going for, from who is in the party. Only a clear signal counts:
-  // a side wins when its Pokémon are present and the other side's are not; otherwise null (keep the toggle).
-  function detectVariant(session, ids) {
+  // which build the save is going for, from who is in the party (base or fusion side). Each variant
+  // option in guide.json lists the families that give it away (`detect`). Only a clear signal counts:
+  // exactly one option of a choice is present; otherwise null (keep the toggle).
+  function detectVariant(session, ids, guide) {
     var fams = {};
     (session.party || []).forEach(function (p) {
       [p.species, p.fusionSpecies].forEach(function (id) {
@@ -186,12 +187,12 @@
         fams[ids.family[n] || n] = true;
       });
     });
-    function any(list) { return list.some(function (f) { return fams[f]; }); }
-    function pick(a, aFams, b, bFams) { var A = any(aFams), B = any(bFams); return A && !B ? a : B && !A ? b : null; }
-    return {
-      carry: pick("kyogre", ["KYOGRE", "SKITTY"], "regigigas", ["REGIGIGAS", "SMOOCHUM"]),
-      killer: pick("shedinja", ["NINCADA"], "yamazone", ["YAMASK"]),   // NINCADA family covers Nincada, Ninjask and Shedinja
-    };
+    var out = {};
+    Object.keys((guide && guide.variants) || {}).forEach(function (k) {
+      var hit = guide.variants[k].options.filter(function (o) { return (o.detect || []).some(function (f) { return fams[f]; }); });
+      out[k] = hit.length === 1 ? hit[0].id : null;
+    });
+    return out;
   }
 
   return { mapSession: mapSession, detectVariant: detectVariant };

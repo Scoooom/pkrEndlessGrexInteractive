@@ -87,24 +87,9 @@
   }
 
   function planStarter(s, save, info) {
-    var plan = s.plan, main = planSpecies(plan.species, plan, plan.moves || [], save, info);
-    main.id = s.id;
-    if (!main.blockers.length || !plan.alts) return main;
-    // an alternative that can do the same job (Dark Void from an egg move), cheapest first
-    var alts = plan.alts.map(function (a) {
-      var sp = info.species[a];
-      var need = (plan.moves || []).filter(function (m) { return sp.levelMoves.indexOf(m) >= 0 || sp.eggMoves.indexOf(m) >= 0; });
-      var r = planSpecies(a, { natures: plan.natures, need_moves: plan.need_moves, passive: false }, need, save, info);
-      r.id = s.id; r.instead_of = main.name;
-      return r;
-    }).filter(function (r) { return !r.blockers.length; }).sort(function (a, b) { return a.cost - b.cost; });
-    if (alts.length) { alts[0].main = main; return alts[0]; }
-    // none of them can do it yet: say any of them would do
-    var names = plan.alts.map(nice), need = (plan.moves || []).filter(function (m) {
-      return plan.alts.some(function (a) { return info.species[a].eggMoves.indexOf(m) >= 0 || info.species[a].levelMoves.indexOf(m) >= 0; });
-    }).map(nice);
-    main.alt_text = "or use " + names.slice(0, -1).join(", ") + " or " + names[names.length - 1] + (need.length ? " with " + need.join(", ") + " unlocked" : "");
-    return main;
+    var plan = s.plan, r = planSpecies(plan.species, plan, Array.isArray(plan.moves) ? plan.moves : [], save, info);
+    r.id = s.id;
+    return r;
   }
 
   // Can this save start the build? `starters` = the plans for the build's starters (current variant).
@@ -150,19 +135,38 @@
     return { ready: !need.length, need: need, total: total, limit: info.value_limit };
   }
 
-  // guide = the full guide (all variants); returns per-starter plans and which carry options work
-  function planAll(guide, save, info) {
-    var byId = {};
-    guide.starters.forEach(function (s) { if (s.plan) byId[s.id] = planStarter(s, save, info); });
-    var carry = {};
-    ((guide.variants && guide.variants.carry && guide.variants.carry.options) || []).forEach(function (o) {
-      var mine = guide.starters.filter(function (s) { return s.variant && s.variant.carry === o.id; });
-      var bad = mine.filter(function (s) { return byId[s.id] && byId[s.id].blockers.length; });
-      carry[o.id] = { ok: !bad.length, why: bad.map(function (s) { return byId[s.id].name + ": " + byId[s.id].blockers.join(", "); }) };
+  // guide = the full guide (all variants), with $switch values unresolved; only the hard checks
+  // (caught, ability, required moves) are used here, to choose the build.
+  // Each variant with `plan_pick` gets a recommendation:
+  //   "only":  the one option whose starters are all unlocked; with none or several, the current choice stays
+  //   "first": the first option (in listed order) whose starters are all unlocked
+  function choose(guide, save, info, current) {
+    var plans = {};
+    guide.starters.forEach(function (s) { if (s.plan) plans[s.id] = planStarter(s, save, info); });
+    var pick = {}, status = {};
+    Object.keys(guide.variants || {}).forEach(function (k) {
+      var V = guide.variants[k];
+      pick[k] = current[k];
+      if (!V.plan_pick) return;
+      var st = status[k] = {};
+      V.options.forEach(function (o) {
+        var mine = guide.starters.filter(function (s) {
+          var c = s.variant && s.variant[k];
+          return c && (Array.isArray(c) ? c.indexOf(o.id) >= 0 : c === o.id) && plans[s.id];
+        });
+        var bad = mine.filter(function (s) { return plans[s.id].blockers.length; });
+        st[o.id] = { ok: !bad.length, why: bad.map(function (s) { return plans[s.id].name + ": " + plans[s.id].blockers.join(", "); }) };
+      });
+      var ok = V.options.filter(function (o) { return st[o.id].ok; });
+      if (V.plan_pick === "only" && ok.length === 1) pick[k] = ok[0].id;
+      if (V.plan_pick === "first" && ok.length) pick[k] = ok[0].id;
     });
-    var okIds = Object.keys(carry).filter(function (k) { return carry[k].ok; });
-    return { starters: byId, carry: carry, carryPick: okIds.length === 1 ? okIds[0] : null, limit: info.value_limit };
+    return { pick: pick, status: status };
+  }
+  // plans for the starters of one build (a guide with the variant applied)
+  function planBuild(starters, save, info) {
+    return starters.filter(function (s) { return s.plan; }).map(function (s) { return planStarter(s, save, info); });
   }
 
-  return { isSystemSave: isSystemSave, readSystem: readSystem, planAll: planAll, readiness: readiness };
+  return { isSystemSave: isSystemSave, readSystem: readSystem, choose: choose, planBuild: planBuild, readiness: readiness };
 });

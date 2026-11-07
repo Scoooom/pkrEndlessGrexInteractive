@@ -23,25 +23,51 @@
     });
     return out;
   }
+  // a value can be one option id or a list of them
+  function when(cond, v) {
+    return Object.keys(cond).every(function (k) { return Array.isArray(cond[k]) ? cond[k].indexOf(v[k]) >= 0 : v[k] === cond[k]; });
+  }
   function matches(entry, v) {
     if (!entry || typeof entry !== "object" || !entry.variant) return true;
-    return Object.keys(entry.variant).every(function (k) { return v[k] === entry.variant[k]; });
+    return when(entry.variant, v);
   }
-  function walk(x, v) {
+  // {"$switch": [{when: {...}, value: X}, ..., {value: default}]} picks the first case that matches;
+  // a value of null drops the field
+  function isSwitch(x) { return x && typeof x === "object" && !Array.isArray(x) && Array.isArray(x.$switch); }
+  function pickSwitch(x, v) {
+    var c = x.$switch.filter(function (c) { return !c.when || when(c.when, v); })[0];
+    return c ? c.value : null;
+  }
+  function walk(x, v, names) {
+    if (isSwitch(x)) return walk(pickSwitch(x, v), v, names);
+    // {carry}, {dv}, ... in text become the chosen option's name
+    if (typeof x === "string") return x.replace(/\{(\w+)\}/g, function (m, k) { return names[k] || m; });
     if (Array.isArray(x)) {
-      return x.filter(function (e) { return matches(e, v); }).map(function (e) {
-        if (e && typeof e === "object" && !Array.isArray(e) && e.variant && typeof e.text === "string" && Object.keys(e).length === 2) return e.text;
-        return walk(e, v);
+      var out = [];
+      x.forEach(function (e) {
+        if (!matches(e, v)) return;
+        var w = e && typeof e === "object" && !Array.isArray(e) && e.variant && typeof e.text === "string" && Object.keys(e).length === 2
+          ? walk(e.text, v, names) : walk(e, v, names);
+        if (w !== null || !isSwitch(e)) out.push(w);
       });
+      return out;
     }
     if (x && typeof x === "object") {
       var o = {};
-      Object.keys(x).forEach(function (k) { o[k] = k === "variants" ? x[k] : walk(x[k], v); });
+      Object.keys(x).forEach(function (k) {
+        if (k === "variants") { o[k] = x[k]; return; }
+        var w = walk(x[k], v, names);
+        if (w !== null || !isSwitch(x[k])) o[k] = w;
+      });
       return o;
     }
     return x;
   }
-  function applyVariant(guide, v) { return walk(guide, normalize(guide, v)); }
+  function applyVariant(guide, v) {
+    var n = normalize(guide, v), names = {};
+    Object.keys(n).forEach(function (k) { names[k] = guide.variants[k].options.filter(function (o) { return o.id === n[k]; })[0].name; });
+    return walk(guide, n, names);
+  }
 
   return { applyVariant: applyVariant, normalize: normalize, defaults: defaults };
 });

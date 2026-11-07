@@ -183,7 +183,8 @@ input:checked + .box svg { opacity: 1; }
 .variants { display: grid; gap: 8px; margin: 0 0 18px; }
 .var-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
 .var-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); min-width: 92px; }
-.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg { display: inline-flex; flex-wrap: wrap; max-width: 100%; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+@media (max-width: 480px) { .seg button { padding: 6px 10px; } }
 .seg button { font: inherit; font-size: 13.5px; padding: 6px 14px; border: 0; background: var(--surface); color: var(--fg); cursor: pointer; }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); font-weight: 600; }
