@@ -34,6 +34,9 @@ def wanted_keys():
     for s in guide.get("starters", []):
         if s.get("sprite"):
             keys.add(s["sprite"])
+        # alternatives the starter plan can suggest (Gastly for Smeargle, ...)
+        for a in (s.get("plan") or {}).get("alts", []):
+            keys.add(a)
     for table in (spawns.get("steps", {}), spawns.get("items", {})):
         for entry in table.values():
             for b in entry["biomes"]:

@@ -189,3 +189,47 @@ fs.writeFileSync(IDS_OUT, JSON.stringify({
   forms: Object.fromEntries(Object.entries(species).map(([id, sp]) => [id, sp.forms])),
 }));
 for (const [n, s] of Object.entries({ ...result.steps, ...result.items })) console.log("step", n, s.kind, s.biomes.length, "biomes", s.biomes.slice(0, 3).map((b) => b.biome + ":" + b.list.map((x) => x.species + "/" + x.tier).join("|")).join("  "));
+
+// ---------- starter data for the system-save starter planner (only the species the guide's starter plans name)
+const STARTERS_OUT = process.argv[6] || path.join(path.dirname(IDS_OUT), "starters.json");
+const want = new Set();
+for (const s of guide.starters) if (s.plan) { want.add(s.plan.species); (s.plan.alts || []).forEach((a) => want.add(a)); }
+const speciesNum = Object.fromEntries(Object.entries(parseEnum("src/enums/species-id.ts")).map(([n, id]) => [id, Number(n)]));
+const eggText = fs.readFileSync(path.join(SRC, "src/data/balance/moves/egg-moves.ts"), "utf8");
+const starterInfo = {};
+for (const f of fs.readdirSync(speciesDir).filter((f) => f.endsWith(".ts"))) {
+  const text = fs.readFileSync(path.join(speciesDir, f), "utf8");
+  const parts = text.split(/\n\s*generation\w+SpeciesData\[SpeciesId\.([A-Z0-9_]+)\]\s*=\s*\{/);
+  for (let i = 1; i < parts.length; i += 2) {
+    const id = parts[i], body = parts[i + 1];
+    if (!want.has(id)) continue;
+    const cost = Number((body.match(/starterCost:\s*(\d+)/) || [])[1]);
+    // passives: one ability, or one per form index
+    let passives = [];
+    const pm = body.match(/passives:\s*(?:AbilityId\.([A-Z0-9_]+)|\{([^}]*)\})/);
+    if (pm && pm[1]) passives = [pm[1]];
+    else if (pm) for (const m of pm[2].matchAll(/(\d+):\s*AbilityId\.([A-Z0-9_]+)/g)) passives[Number(m[1])] = m[2];
+    // starter moves: level-up moves from Lv 1 to 5 (the game skips evolve/relearn moves)
+    const lm = (body.match(/\n\s*levelMoves:\s*\[([\s\S]*?)\n\s*\],/) || [])[1] || "";
+    const levelMoves = [...lm.matchAll(/\[\s*(\d+)\s*,\s*MoveId\.([A-Z0-9_]+)\s*\]/g)].filter((m) => m[1] >= 1 && m[1] <= 5).map((m) => m[2]);
+    const em = eggText.match(new RegExp("\\[SpeciesId\\." + id + "\\]:\\s*\\[([^\\]]*)\\]"));
+    const eggMoves = em ? [...em[1].matchAll(/MoveId\.([A-Z0-9_]+)/g)].map((m) => m[1]) : [];
+    starterInfo[id] = { num: speciesNum[id], cost, passives, abilities: species[id].forms.map((x) => x.slice(0, 3)), levelMoves: [...new Set(levelMoves)], eggMoves };
+  }
+}
+for (const id of want) if (!starterInfo[id]) throw new Error("starter plan species not found: " + id);
+fs.writeFileSync(STARTERS_OUT, JSON.stringify({
+  generated: result.generated,
+  natures: parseEnum("src/enums/nature.ts"),
+  // starter points for Endless (getRunValueLimit in starter-select-ui-utils.ts)
+  value_limit: 15,
+  // candy for the 1st and 2nd cost reduction, by base cost 1..10 (allStarterCandyCosts in balance/starters.ts)
+  cost_reduction: (() => {
+    const txt = fs.readFileSync(path.join(SRC, "src/data/balance/starters.ts"), "utf8");
+    const rows = [...txt.matchAll(/costReduction:\s*\[(\d+),\s*(\d+)\]/g)].map((m) => [Number(m[1]), Number(m[2])]);
+    if (rows.length !== 10) throw new Error("cost reduction table not found");
+    return rows;
+  })(),
+  value_reduction_max: 2,
+  species: starterInfo,
+}));

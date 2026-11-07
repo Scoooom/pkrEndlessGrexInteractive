@@ -352,6 +352,28 @@ details .inner ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-
 .imp-row .mono { white-space: nowrap; font-size: 12.5px; }
 .imp-row.down { background: color-mix(in srgb, #ff8a50 7%, var(--surface)); }
 .imp-err { color: #ffa06b; margin: 0; }
+.plan { margin-bottom: 14px; }
+.pl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.pl-head .muted { font-size: 12.5px; }
+.pl-head .reset { margin-left: auto; }
+.pl-carry { margin: 8px 0; font-size: 14px; }
+.pl-scroll { overflow-x: auto; }
+.pl-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+.pl-table th { text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.pl-table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.pl-table td small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+.pl-table tfoot td { border-bottom: 0; font-weight: 600; }
+.pl-mon { display: flex; gap: 6px; align-items: flex-start; }
+.pl-mon > span { min-width: 0; }
+.pl-ok { color: var(--ok); font-size: 12px; }
+.pl-bad { color: #ffa06b; font-size: 12px; }
+.pl-note { color: var(--normal); font-size: 12px; }
+.pl-table td.mono { white-space: nowrap; }
+.pl-ready { margin: 0 0 10px; padding: 10px 12px; border-left: 3px solid #ffa06b; border-radius: 4px; background: color-mix(in srgb, #ff8a50 9%, var(--surface)); }
+.pl-ready.ok { border-left-color: var(--ok); background: color-mix(in srgb, var(--ok) 10%, var(--surface)); }
+.pl-ready p { margin: 0; }
+.pl-ready ul { margin: 6px 0; padding-left: 20px; }
+.pl-ready .muted { font-size: 12.5px; }
 .imp-actions { display: flex; justify-content: flex-end; gap: 8px; }
 @media (max-width: 520px) { .biome { grid-template-columns: 1fr; } .where { margin-left: 0; } }
 </style>
@@ -383,7 +405,7 @@ details .inner ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-
 </div>
 
 <aside class="fab" aria-label="Checklist actions">
-  <button class="fab-btn" id="import-btn" type="button" title="Import a PokeRogue session save">
+  <button class="fab-btn" id="import-btn" type="button" title="Import a PokeRogue save: session save fills the checklist, system save (Export Data) plans your starters">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg><span>Import save</span></button>
   <button class="fab-btn danger" id="reset" type="button" title="Clear all progress in this browser">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8M4 4v4.5h4.5"/></svg><span>Reset all</span></button>
@@ -406,6 +428,7 @@ details .inner ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-
 <script src="js/session.js"></script>
 <script src="js/import-map.js"></script>
 <script src="js/variant.js"></script>
+<script src="js/starter-plan.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

@@ -11,6 +11,10 @@
   var VARIANT_KEY = "endless-variant", variant = {};
   try { variant = JSON.parse(localStorage.getItem(VARIANT_KEY) || "{}") || {}; } catch (e) { variant = {}; }
   function saveVariant() { try { localStorage.setItem(VARIANT_KEY, JSON.stringify(variant)); } catch (e) {} }
+  // starter plan read from a system save (only the starter species), kept apart from progress like the variant
+  var PLAN_KEY = "endless-starter-save", planSave = null, starterInfo = null;
+  try { planSave = JSON.parse(localStorage.getItem(PLAN_KEY) || "null"); } catch (e) { planSave = null; }
+  function savePlan() { try { if (planSave) localStorage.setItem(PLAN_KEY, JSON.stringify(planSave)); else localStorage.removeItem(PLAN_KEY); } catch (e) {} }
   var ivItems = {};            // item id -> item, for items capped by an IV
   var labels = {}, sections = [], spliceSteps = [];
   var groupKeys = {};          // "items:regigigas" -> [keys]
@@ -223,6 +227,53 @@
         }).join("") + '</span></div>';
     }).join("") + '</div>';
   }
+  // ---------- starter plan (from a system save)
+  function planHtml(g) {
+    if (!planSave || !starterInfo) return "";
+    var r = window.EndlessStarterPlan.planAll(rawGuide, planSave, starterInfo);
+    var when = planSave.saved ? new Date(planSave.saved).toLocaleString() : "";
+    var c = r.carry, names = rawGuide.variants.carry.options;
+    var okNames = names.filter(function (o) { return c[o.id] && c[o.id].ok; });
+    var carryText = okNames.length === names.length ? "Both carry options have their starters unlocked. Pick one with the Carry toggle in Start here."
+      : okNames.length === 1 ? "Only " + okNames[0].name + " has its starters unlocked, so the page uses it. " + names.filter(function (o) { return !c[o.id].ok; }).map(function (o) { return o.name + ": " + c[o.id].why.join("; "); }).join(". ") + "."
+      : "Neither carry option has its starters unlocked yet. " + names.map(function (o) { return o.name + ": " + c[o.id].why.join("; "); }).join(". ") + ".";
+    var rows = g.starters.map(function (s) { return r.starters[s.id]; }).filter(Boolean);
+    var rd = window.EndlessStarterPlan.readiness(rows, starterInfo), total = rd.total;
+    function yes(b) { return b ? ' <span class="pl-ok">unlocked</span>' : ' <span class="pl-bad">locked</span>'; }
+    var body = rows.map(function (p) {
+      var s = g.starters.filter(function (x) { return x.id === p.id; })[0];
+      var who = esc(p.name) + (p.instead_of ? ' <small>instead of ' + esc(p.instead_of) + '</small>' : '');
+      // no requirement from the plan: show the guide's own text (alternatives have none, so "Any")
+      var ab = p.ability ? esc(p.ability.name) + (p.ability.hidden ? " (hidden)" : "") + yes(p.ability.unlocked) : !p.caught ? "" : p.instead_of ? "Any" : esc(s.ability);
+      var pas = p.passive ? esc(p.passive.name) + (p.passive.unlocked ? ' <span class="pl-ok">turn on</span>' : ' <span class="pl-bad">locked</span>') : !p.caught ? "" : p.instead_of ? "Not needed" : esc(s.passive);
+      var nat = !p.caught ? "" : p.nature ? (p.nature.pick ? "<b>" + esc(p.nature.pick) + "</b>" + (p.nature.wanted.length > 1 ? '<small>any of ' + esc(p.nature.wanted.join(", ")) + '</small>' : '')
+        : '<span class="pl-bad">' + esc(p.nature.wanted.join(", ")) + ' locked</span><small>any nature works for now</small>') : "Any";
+      var mv = !p.moves ? "" : (p.moves.pick.length ? "<b>" + esc(p.moves.pick.join(", ")) + "</b>" : "") +
+        (p.moves.missing.length ? '<span class="pl-bad">' + (p.moves.pick.length ? "; " : "") + esc(p.moves.missing.join(", ")) + ' locked</span>' : "") +
+        (p.moves.other.length ? '<small>' + (p.moves.pick.length || p.moves.missing.length ? "Rest: any of " : "Any of ") + esc(p.moves.other.join(", ")) + '</small>' : "");
+      var msgs = p.blockers.map(function (x) { return '<span class="pl-bad">' + esc(x) + '</span>'; }).concat(p.notes.map(function (x) { return '<span class="pl-note">' + esc(x) + '</span>'; }));
+      return '<tr><td><div class="pl-mon">' + spr(p.instead_of ? p.species : s && s.sprite, "s-row") + '<span>' + who + (msgs.length ? '<small>' + msgs.join("<br>") + '</small>' : '') + '</span></div></td>' +
+        '<td>' + ab + '</td><td>' + pas + '</td><td>' + nat + '</td><td>' + mv + '</td><td class="mono">' + p.cost + '</td></tr>';
+    }).join("");
+    return '<div class="card plan" id="starter-plan"><div class="pl-head"><h3>From your save</h3>' + (when ? '<span class="muted">saved ' + esc(when) + '</span>' : '') +
+      '<button type="button" class="reset" id="plan-clear">Clear</button></div>' +
+      '<p class="pl-carry">' + esc(carryText) + '</p>' + readyHtml(rd) +
+      '<div class="pl-scroll"><table class="pl-table"><thead><tr><th>Starter</th><th>Ability</th><th>Passive</th><th>Nature</th><th>Starting moves</th><th>Pts</th></tr></thead><tbody>' + body + '</tbody>' +
+      '<tfoot><tr><td colspan="5">Total' + (total > r.limit ? ' <span class="pl-bad">over the ' + r.limit + ' point Endless limit</span>' : '') + '</td><td class="mono">' + total + ' / ' + r.limit + '</td></tr></tfoot></table></div></div>';
+  }
+  function readyHtml(rd) {
+    if (rd.ready) return '<p class="pl-ready ok">You are ready to start this build. Pick these on the starter screen.</p>';
+    return '<div class="pl-ready"><p><b>You are not ready to run this guide yet.</b> The minimum you need to unlock to start it:</p><ul>' +
+      rd.need.map(function (x) {
+        return '<li><b>' + esc(x.name) + '</b>: ' + esc(x.what) + (x.candy ? ' <span class="muted">(you have ' + x.have + ')</span>' : '') + '</li>';
+      }).join("") + '</ul><p class="muted">Passives and natures in the table help, but you can start without them.</p></div>';
+  }
+  var infoPromise = null;  // starters.json, for the starter plan
+  function loadStarterInfo() {
+    infoPromise = infoPromise || fetch("data/starters.json").then(function (r) { if (!r.ok) throw new Error("starter data missing"); return r.json(); });
+    infoPromise.catch(function () { infoPromise = null; });
+    return infoPromise;
+  }
   function render() {
     variant = window.EndlessVariant.normalize(rawGuide, variant);
     var g = window.EndlessVariant.applyVariant(rawGuide, variant);
@@ -263,7 +314,7 @@
 
     // starters
     h += '<section id="starters" data-tab="starters"><div class="sec-head"><h2>Starters</h2><span class="mono" id="c-starters"></span></div>' +
-      '<p class="sec-note">Check each one once it is unlocked with the right ability and nature.</p><div class="grid">';
+      '<p class="sec-note">Check each one once it is unlocked with the right ability and nature. Import your system save (PokeRogue: Manage Data, Export Data) to see what to pick on the starter screen.</p>' + planHtml(g) + '<div class="grid">';
     g.starters.forEach(function (s) {
       var k = "s:" + s.id; reg("starters", k, 1, "Starter · " + s.name);
       var extra = "";
@@ -629,6 +680,7 @@
     if (t.id === "here-fold") { hereFolded = !hereFolded; updateHere(); return; }
     if (t.closest("#import-btn")) { $("import-file").value = ""; $("import-file").click(); return; }
     if (t.id === "import-cancel") { closeImport(); return; }
+    if (t.id === "plan-clear") { planSave = null; savePlan(); var y2 = window.scrollY; render(); update(); window.scrollTo(0, y2); return; }
     if (t.id === "import-apply") { applyImport(); return; }
     // in-page links: offset by the sticky header's real height (it grows when the biome panel is open)
     var a = t.closest('a[href^="#"]');
@@ -675,18 +727,19 @@
     $("import-body").innerHTML = '<p class="muted">Reading ' + esc(f.name) + '…</p>';
     $("import-apply").disabled = true;
     // any file can be picked (see index.html), so check it here before sending
-    var bad = f.size > 4 * 1024 * 1024 ? "that file is too large to be a session save"
+    var bad = f.size > 16 * 1024 * 1024 ? "that file is too large to be a save"
       : f.size === 0 ? "that file is empty"
       : /\.(png|jpe?g|gif|heic|webp|mp4|mov|pdf|zip)$/i.test(f.name) ? "that looks like a " + f.name.split(".").pop().toUpperCase() + " file, not a save" : "";
     if (bad) {
-      $("import-body").innerHTML = '<p class="imp-err">Could not import: ' + esc(bad) + '. Pick the session save (.prsv) exported from PokeRogue.</p>';
+      $("import-body").innerHTML = '<p class="imp-err">Could not import: ' + esc(bad) + '. Pick a save (.prsv) exported from PokeRogue.</p>';
       return;
     }
     // everything runs in the browser: decode the save, work out the build, map it onto the checklist
-    Promise.all([f.text().then(window.EndlessSession.decodeSave), loadIds()]).then(function (res) {
-      return importSession(res[0], res[1]);
-    }).then(showPreview).catch(function (e) {
-      $("import-body").innerHTML = '<p class="imp-err">Could not import: ' + esc(e.message) + '. Pick the session save (.prsv) exported from PokeRogue.</p>';
+    f.text().then(window.EndlessSession.decodeSave).then(function (d) {
+      if (window.EndlessStarterPlan.isSystemSave(d)) return loadStarterInfo().then(function (info) { showPlanPreview(d, info); });
+      return loadIds().then(function (ids) { showPreview(importSession(d, ids)); });
+    }).catch(function (e) {
+      $("import-body").innerHTML = '<p class="imp-err">Could not import: ' + esc(e.message) + '. Pick a save (.prsv) exported from PokeRogue: Export Session for the checklist, or Export Data for the starter plan.</p>';
     });
   }
   var preImportVariant = null;    // the toggle before a preview switched it, restored on cancel
@@ -720,7 +773,7 @@
     return r;
   }
   function showPreview(r) {
-    importValues = r.values;
+    importValues = r.values; pendingPlan = null;
     // the save shows which build it is going for: switch the page to it so the preview lists the right rows
     var detectedHtml = "";
     if (r.variant) {
@@ -754,7 +807,33 @@
       }).join("") + '</div>' : '');
     $("import-apply").disabled = !changes.length;
   }
+  // a system save: show what the starter plan found; Apply keeps it and switches the carry if only one works
+  var pendingPlan = null;
+  function showPlanPreview(sys, info) {
+    starterInfo = info;
+    var save = window.EndlessStarterPlan.readSystem(sys, info);
+    var r = window.EndlessStarterPlan.planAll(rawGuide, save, info);
+    pendingPlan = { save: save, carry: r.carryPick }; importValues = null;
+    var g = window.EndlessVariant.applyVariant(rawGuide, r.carryPick ? { carry: r.carryPick, killer: variant.killer } : variant);
+    var mine = g.starters.map(function (s) { return r.starters[s.id]; }).filter(Boolean);
+    var rd = window.EndlessStarterPlan.readiness(mine, info);
+    var opts = rawGuide.variants.carry.options, ok = opts.filter(function (o) { return r.carry[o.id].ok; });
+    $("import-body").innerHTML =
+      '<p class="imp-sum">System save' + (save.saved ? ' from <b>' + esc(new Date(save.saved).toLocaleString()) + '</b>' : '') + '. This fills in the starter plan only; your checklist is not changed.</p>' +
+      '<p class="imp-sum">Carry: ' + (ok.length === opts.length ? 'both <b>' + opts.map(function (o) { return esc(o.name); }).join("</b> and <b>") + '</b> are unlocked, the Carry toggle picks.'
+        : ok.length === 1 ? '<b>' + esc(ok[0].name) + '</b> only (' + esc(opts.filter(function (o) { return !r.carry[o.id].ok; }).map(function (o) { return o.name + ": " + r.carry[o.id].why.join("; "); }).join(". ")) + '). The page will switch to it.'
+        : '<b class="down">neither is ready</b> (' + esc(opts.map(function (o) { return o.name + ": " + r.carry[o.id].why.join("; "); }).join(". ")) + ').') + '</p>' +
+      '<p class="imp-sum">' + (rd.ready ? '<b>Ready to start this build.</b>' : '<b class="down">Not ready to run this guide yet</b>: ' + rd.need.length + ' unlock' + (rd.need.length === 1 ? '' : 's') + ' needed.') + ' Apply to see the plan in Starters.</p>';
+    $("import-apply").disabled = false;
+  }
   function applyImport() {
+    if (pendingPlan) {
+      planSave = pendingPlan.save; savePlan();
+      if (pendingPlan.carry) { variant.carry = pendingPlan.carry; saveVariant(); }
+      pendingPlan = null; preImportVariant = null; closeImport();
+      render(); update(); showTab("starters", false); scrollToEl($("starter-plan"), false);
+      return;
+    }
     if (!importValues) return;
     var btn = $("import-apply"); btn.disabled = true; btn.textContent = "Applying…";
     preImportVariant = null; saveVariant();
@@ -762,16 +841,17 @@
       .catch(function () { btn.disabled = false; btn.textContent = "Apply (retry)"; });
   }
   function closeImport() {
-    $("import-panel").hidden = true; importValues = null;
+    $("import-panel").hidden = true; importValues = null; pendingPlan = null;
     if (preImportVariant) { variant = preImportVariant; preImportVariant = null; render(); update(); }
   }
 
   // ---------- boot
   Promise.all([
     fetch("data/guide.json").then(function (r) { return r.json(); }),
-    fetch("data/spawns.json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    fetch("data/spawns.json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    planSave ? loadStarterInfo().catch(function () { return null; }) : null
   ]).then(function (res) {
-    spawnData = res[1]; rawGuide = res[0]; render();
+    spawnData = res[1]; rawGuide = res[0]; starterInfo = res[2]; render();
     return store.start();
   }).then(update).catch(function () { $("app").innerHTML = '<p class="loading">Could not load the guide data. Reload to try again.</p>'; });
 })();

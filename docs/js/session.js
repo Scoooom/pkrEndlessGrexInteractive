@@ -51,7 +51,8 @@
       .then(function (buf) { return new TextDecoder().decode(buf); });
   }
 
-  function valid(s) { return s && Array.isArray(s.party) && Array.isArray(s.modifiers) ? s : null; }
+  // a session save (party + modifiers) or a system save (dexData + starterData, for the starter planner)
+  function valid(s) { return s && ((Array.isArray(s.party) && Array.isArray(s.modifiers)) || (s.dexData && s.starterData)) ? s : null; }
 
   // -> Promise<session>
   function decodeSave(text) {
@@ -60,7 +61,7 @@
     try { var j = valid(JSON.parse(t)); if (j) return Promise.resolve(j); } catch (e) { /* not plain JSON */ }
     function guest() {
       try { var g = valid(JSON.parse(decodeURIComponent(atob(t)))); if (g) return g; } catch (e) { /* not a guest save */ }
-      throw new Error("could not read this file as a PokeRogue session save");
+      throw new Error("could not read this file as a PokeRogue save");
     }
     return aesDecrypt(t, SAVE_KEY).then(function (s) { return valid(JSON.parse(s)) || guest(); }, guest);
   }
