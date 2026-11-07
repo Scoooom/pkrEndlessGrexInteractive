@@ -1,0 +1,9 @@
+services:
+  endless:
+    build: .
+    container_name: endless
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3310:3000"
+    volumes:
+      - ./data:/data

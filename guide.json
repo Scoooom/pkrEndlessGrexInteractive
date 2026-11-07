@@ -1,0 +1,1698 @@
+{
+ "meta": {
+  "title": "Endless Entrainment Normalize Build",
+  "author": "Grex",
+  "source_url": "https://wiki.pokerogue.net/guides:endless_normalize_build",
+  "game": "PokeRogue",
+  "mode": "Endless",
+  "summary": "Give the boss Normalize through Entrainment so its attacks cannot hurt you, then whittle it down. Compact four-slot team built from fusions.",
+  "credits": "Thanks in the guide to sang, Ellie, Pepo, Monkee, excoman. Recommended tools: Triickstr's Team Planner and Sandstorm's Dex."
+ },
+ "pros": [
+  "Little to no egg move investment",
+  "Can farm Master Balls at any time",
+  "Regigigas carries for a long stretch",
+  "Almost never fails a shiny catch",
+  "Four team slots, no wasted abilities",
+  "No Protect TM needed"
+ ],
+ "cons": [
+  "Needs two speed-invested Pokémon",
+  {
+   "text": "Needs hidden abilities, mainly Teddiursa and Regigigas",
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "text": "Needs a hidden ability Teddiursa",
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  "Heavy splicer usage",
+  "Needs a wild Mat Block user"
+ ],
+ "starters": [
+  {
+   "id": "teddiursa",
+   "name": "Teddiursa",
+   "ability": "Honey Gather (hidden)",
+   "passive": "Run Away",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "role": "Keeps Run Away as passive after fusion. Honey Gather speeds up rerolls. Learns Thief or Covet, and Roar, by TM.",
+   "import": {
+    "family": "TEDDIURSA",
+    "hidden": true
+   },
+   "sprite": "TEDDIURSA"
+  },
+  {
+   "id": "pumpkaboo",
+   "name": "Pumpkaboo (Average)",
+   "ability": "Pickup or Frisk",
+   "passive": "Illuminate",
+   "egg_moves": [],
+   "nature": "Any, with a Speed nature",
+   "alternatives": [],
+   "evolves_to": "Gourgeist",
+   "role": "Illuminate works as a lure. Owns Trick-or-Treat, which pairs with Normalize. Frisk shows wild abilities without catching.",
+   "import": {
+    "family": "PUMPKABOO"
+   },
+   "sprite": "PUMPKABOO"
+  },
+  {
+   "id": "smoochum",
+   "name": "Smoochum",
+   "ability": "Any",
+   "passive": "Psychic Surge",
+   "egg_moves": [],
+   "nature": "Any, with a Speed nature",
+   "alternatives": [],
+   "evolves_to": "Jynx",
+   "role": "Fast, fuses later with the Normalize Pokémon. Emergency carry. Must bring Powder Snow so Smeargle can sketch it for the first fusion.",
+   "import": {
+    "family": "SMOOCHUM",
+    "knows": [
+     "POWDER_SNOW"
+    ],
+    "or_known_by": "PUMPKABOO"
+   },
+   "sprite": "SMOOCHUM",
+   "must_know": [
+    "Powder Snow"
+   ],
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "yamask",
+   "name": "Yamask",
+   "ability": "Mummy",
+   "passive": "Purifying Salt",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [
+    "Pichu",
+    "Diglett"
+   ],
+   "role": "Late game boss killer using damage over time. Has Heal Block from level 1. Staying unevolved keeps HP low so Leech Seed heals to full. Pichu and Diglett come with Sturdy as passive.",
+   "import": {
+    "family": "YAMASK"
+   },
+   "sprite": "YAMASK",
+   "variant": {
+    "killer": "yamazone"
+   }
+  },
+  {
+   "id": "nincada",
+   "name": "Nincada",
+   "ability": "Any",
+   "passive": "Not needed",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "evolves_to": "Ninjask, with Shedinja splitting off",
+   "role": "Source of Shedinja, the boss killer. See the Nincada setup step in Splicing.",
+   "import": {
+    "family": "NINCADA"
+   },
+   "sprite": "NINCADA",
+   "variant": {
+    "killer": "shedinja"
+   }
+  },
+  {
+   "id": "regigigas",
+   "name": "Regigigas",
+   "ability": "Normalize (hidden)",
+   "passive": "Scrappy",
+   "egg_moves": [
+    "Land's Wrath"
+   ],
+   "nature": "Adamant (+Atk, -SpAtk)",
+   "alternatives": [],
+   "role": "Centre of the build and a strong carry. Rock Slide is its best double battle move. Land's Wrath egg move replaces hunting for Rock Slide.",
+   "import": {
+    "family": "REGIGIGAS",
+    "hidden": true
+   },
+   "sprite": "REGIGIGAS",
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "kyogre",
+   "name": "Kyogre",
+   "ability": "Any",
+   "passive": "Mold Breaker",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "role": "Carries the run with Endure, Ice Beam, Water Pulse and Water Spout. Later fuses with Skitty and becomes Killer Support. Kyogre stays the base, so the fusion keeps Mold Breaker as passive.",
+   "import": {
+    "family": "KYOGRE"
+   },
+   "sprite": "KYOGRE",
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "skitty",
+   "name": "Skitty",
+   "ability": "Normalize",
+   "passive": "Not needed",
+   "egg_moves": [],
+   "nature": "Any",
+   "alternatives": [],
+   "role": "Fusion partner for Kyogre. Learns Entrainment, Gastro Acid, Curse and Shed Tail through splicing, so Kyogre keeps its carry moves until the final fusion. As the second species it gives the fusion its Normalize ability. Kyogre + Skitty is Water/Normal.",
+   "import": {
+    "family": "SKITTY",
+    "ability_index": 1
+   },
+   "sprite": "SKITTY",
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "smeargle",
+   "name": "Smeargle",
+   "ability": "Any",
+   "passive": "Not needed",
+   "egg_moves": [
+    "Dark Void"
+   ],
+   "nature": "Any",
+   "alternatives": [
+    "Gastly",
+    "Drowzee",
+    "Lunatone",
+    "Espurr (all have the Dark Void egg move)"
+   ],
+   "role": "Sketch saves splicers. Its job is the first fusion onto Pumpkaboo, teaching Dark Void. Gastly, Drowzee, Lunatone and Espurr also have the Dark Void egg move and can do this instead, but only Smeargle brings Sketch, which saves 2 splicers for Staller.",
+   "import": {
+    "step": 1
+   },
+   "sprite": "SMEARGLE"
+  }
+ ],
+ "items": [
+  {
+   "id": "soul-rg",
+   "name": "Soul Dew",
+   "holder": "Regigigas",
+   "qty": 10,
+   "source": "items_table",
+   "group": "regigigas",
+   "import": {
+    "held": "SOUL_DEW"
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "soul-gg",
+   "name": "Soul Dew",
+   "holder": "Gourgeist",
+   "qty": 10,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "SOUL_DEW"
+   }
+  },
+  {
+   "id": "lefto",
+   "name": "Leftovers",
+   "holder": "Yamask",
+   "qty": 4,
+   "source": "items_table",
+   "group": "yamask",
+   "import": {
+    "held": "LEFTOVERS"
+   },
+   "variant": {
+    "killer": "yamazone"
+   }
+  },
+  {
+   "id": "wide-ym",
+   "name": "Wide Lens",
+   "holder": "Yamask",
+   "qty": 2,
+   "source": "items_table",
+   "group": "yamask",
+   "import": {
+    "held": "WIDE_LENS"
+   },
+   "variant": {
+    "killer": "yamazone"
+   }
+  },
+  {
+   "id": "wide-pk",
+   "name": "Wide Lens",
+   "holder": "Pumpkaboo",
+   "qty": 3,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "WIDE_LENS"
+   }
+  },
+  {
+   "id": "carbos-rg",
+   "name": "Carbos",
+   "holder": "Regigigas",
+   "qty": 31,
+   "source": "items_table",
+   "group": "regigigas",
+   "import": {
+    "held": "BASE_STAT_BOOSTER",
+    "stat": 5
+   },
+   "max_iv": 5,
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "carbos-gg",
+   "name": "Carbos",
+   "holder": "Gourgeist",
+   "qty": 31,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "BASE_STAT_BOOSTER",
+    "stat": 5
+   },
+   "max_iv": 5
+  },
+  {
+   "id": "rockslide",
+   "name": "Rock Slide TM",
+   "holder": "Regigigas",
+   "qty": 1,
+   "source": "items_table",
+   "note": "Not needed if Regigigas has Land's Wrath",
+   "group": "regigigas",
+   "import": {
+    "move": [
+     "ROCK_SLIDE",
+     "LANDS_WRATH"
+    ],
+    "any": true
+   },
+   "splice": [
+    "ROCK_SLIDE"
+   ],
+   "done_after_step": 17,
+   "variant": {
+    "carry": "regigigas"
+   },
+   "done_if": "landswrath"
+  },
+  {
+   "id": "landswrath",
+   "name": "Land's Wrath",
+   "holder": "Regigigas",
+   "qty": 1,
+   "source": "variant",
+   "optional": true,
+   "note": "Optional, does not count toward completion. Egg move, or splice it from a wild user. Having it also covers the Rock Slide TM.",
+   "group": "regigigas",
+   "import": {
+    "move": [
+     "LANDS_WRATH"
+    ]
+   },
+   "splice": [
+    "LANDS_WRATH"
+   ],
+   "done_after_step": 17,
+   "variant": {
+    "carry": "regigigas"
+   },
+   "rec_species": [
+    {
+     "key": "ZYGARDE"
+    }
+   ]
+  },
+  {
+   "id": "lariat",
+   "name": "Darkest Lariat TM",
+   "holder": "Regigigas",
+   "qty": 1,
+   "source": "items_table",
+   "group": "regigigas",
+   "import": {
+    "move": [
+     "DARKEST_LARIAT"
+    ]
+   },
+   "splice": [
+    "DARKEST_LARIAT"
+   ],
+   "done_after_step": 17,
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "thief",
+   "name": "Covet or Thief TM",
+   "holder": "Teddiursa",
+   "qty": 1,
+   "source": "items_table",
+   "group": "teddiursa",
+   "import": {
+    "move": [
+     "THIEF",
+     "COVET"
+    ],
+    "any": true
+   },
+   "splice": [
+    "THIEF",
+    "COVET"
+   ]
+  },
+  {
+   "id": "roar",
+   "name": "Roar TM",
+   "holder": "Teddiursa",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "teddiursa",
+   "import": {
+    "move": [
+     "ROAR"
+    ]
+   },
+   "splice": [
+    "ROAR"
+   ]
+  },
+  {
+   "id": "tera",
+   "name": "Tera Orb",
+   "holder": null,
+   "qty": 1,
+   "source": "items_table",
+   "group": "team",
+   "import": {
+    "global": "TERA_ORB"
+   }
+  },
+  {
+   "id": "shards-teddiursa",
+   "name": "Ghost Tera Shard",
+   "holder": "Teddiursa",
+   "qty": 1,
+   "source": "items_table",
+   "group": "teddiursa",
+   "import": {
+    "tera": "GHOST"
+   }
+  },
+  {
+   "id": "shards-jynx",
+   "name": "Ghost Tera Shard",
+   "holder": "Jynx",
+   "qty": 1,
+   "source": "items_table",
+   "group": "jynx",
+   "import": {
+    "tera": "GHOST"
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "multi-gg",
+   "name": "Multi Lens",
+   "holder": "Gourgeist",
+   "qty": 2,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "MULTI_LENS"
+   }
+  },
+  {
+   "id": "kings",
+   "name": "King's Rock",
+   "holder": "Gourgeist",
+   "qty": 3,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "KINGS_ROCK"
+   }
+  },
+  {
+   "id": "lucky-rg",
+   "name": "Lucky Egg",
+   "holder": "Regigigas",
+   "qty": 60,
+   "source": "items_table",
+   "group": "regigigas",
+   "import": {
+    "held": "LUCKY_EGG"
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "lucky-gg",
+   "name": "Lucky Egg",
+   "holder": "Gourgeist",
+   "qty": 60,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "LUCKY_EGG"
+   }
+  },
+  {
+   "id": "golden-rg",
+   "name": "Golden Egg",
+   "holder": "Regigigas",
+   "qty": 15,
+   "source": "items_table",
+   "group": "regigigas",
+   "import": {
+    "held": "GOLDEN_EGG"
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "golden-gg",
+   "name": "Golden Egg",
+   "holder": "Gourgeist",
+   "qty": 15,
+   "source": "items_table",
+   "group": "gourgeist",
+   "import": {
+    "held": "GOLDEN_EGG"
+   }
+  },
+  {
+   "id": "mbh-gouot",
+   "name": "Mini Black Hole",
+   "holder": "Staller",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "gourgeist",
+   "import": {
+    "held": "MINI_BLACK_HOLE"
+   }
+  },
+  {
+   "id": "mbh-teddiurk",
+   "name": "Mini Black Hole",
+   "holder": "Runner",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "teddiursa",
+   "import": {
+    "held": "MINI_BLACK_HOLE"
+   }
+  },
+  {
+   "id": "mbh-jynx",
+   "name": "Mini Black Hole",
+   "holder": "Killer Support",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "jynx",
+   "import": {
+    "held": "MINI_BLACK_HOLE",
+    "holders": [
+     "SMOOCHUM",
+     "REGIGIGAS"
+    ]
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "multi-td",
+   "name": "Multi Lens",
+   "holder": "Runner",
+   "qty": 2,
+   "source": "final_builds",
+   "group": "teddiursa",
+   "import": {
+    "held": "MULTI_LENS"
+   }
+  },
+  {
+   "id": "grip",
+   "name": "Grip Claw",
+   "holder": "Killer Support",
+   "qty": 5,
+   "source": "final_builds",
+   "group": "jynx",
+   "import": {
+    "held": "GRIP_CLAW",
+    "holders": [
+     "SMOOCHUM",
+     "REGIGIGAS"
+    ]
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "mystic",
+   "name": "Mystical Rock",
+   "holder": "Killer Support",
+   "qty": 2,
+   "source": "final_builds",
+   "group": "jynx",
+   "import": {
+    "held": "MYSTICAL_ROCK",
+    "holders": [
+     "SMOOCHUM",
+     "REGIGIGAS"
+    ]
+   },
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "soul-ky",
+   "name": "Soul Dew",
+   "holder": "Kyogre",
+   "qty": 10,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "SOUL_DEW"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "carbos-ky",
+   "name": "Carbos",
+   "holder": "Kyogre",
+   "qty": 31,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "BASE_STAT_BOOSTER",
+    "stat": 5
+   },
+   "variant": {
+    "carry": "kyogre"
+   },
+   "max_iv": 5
+  },
+  {
+   "id": "lucky-ky",
+   "name": "Lucky Egg",
+   "holder": "Kyogre",
+   "qty": 60,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "LUCKY_EGG"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "golden-ky",
+   "name": "Golden Egg",
+   "holder": "Kyogre",
+   "qty": 15,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "GOLDEN_EGG"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "shards-ky",
+   "name": "Ghost Tera Shard",
+   "holder": "Kyogre",
+   "qty": 1,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "tera": "GHOST"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "mbh-ky",
+   "name": "Mini Black Hole",
+   "holder": "Killer Support",
+   "qty": 1,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "MINI_BLACK_HOLE"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "grip-ky",
+   "name": "Grip Claw",
+   "holder": "Killer Support",
+   "qty": 5,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "GRIP_CLAW"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "mystic-ky",
+   "name": "Mystical Rock",
+   "holder": "Killer Support",
+   "qty": 2,
+   "source": "variant",
+   "group": "kyogre",
+   "import": {
+    "held": "MYSTICAL_ROCK"
+   },
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "wide-sh",
+   "name": "Wide Lens",
+   "holder": "Shedinja",
+   "qty": 2,
+   "source": "variant",
+   "group": "shedinja",
+   "note": "Nature's Madness is 90% accuracy. Two Wide Lens bring it to 100%.",
+   "import": {
+    "held": "WIDE_LENS"
+   },
+   "variant": {
+    "killer": "shedinja"
+   }
+  }
+ ],
+ "splicing": {
+  "note": "Always start with step 1, Smeargle onto Pumpkaboo. After that the order is up to you: Items, Splicing and Final fusions are all worked on at the same time, so do whatever is rarest or available in your current biome first. If you hold a pending target but find a rarer one (for example a Greninja for Mat Block), take the rarer one. Regigigas can hold on its own so you can stay in the carry phase longer.",
+  "steps": [
+   {
+    "n": 1,
+    "base": "Gourgeist",
+    "partner": "Smeargle",
+    "teach": [
+     "Dark Void",
+     "Sketch",
+     "Sketch"
+    ],
+    "alt": "Dark Void, Sketch and Powder Snow. Either works: Powder Snow comes from sketching Smoochum.",
+    "result": "unsplice",
+    "group": "gourgeist",
+    "import": {
+     "move": [
+      "DARK_VOID"
+     ]
+    },
+    "first": true
+   },
+   {
+    "n": 2,
+    "base": "Gourgeist",
+    "partner": "Wild Mat Block user",
+    "teach": [
+     "Mat Block"
+    ],
+    "alt": "Can be sketched instead",
+    "result": "unsplice",
+    "group": "gourgeist",
+    "import": {
+     "move": [
+      "MAT_BLOCK"
+     ]
+    }
+   },
+   {
+    "n": 3,
+    "base": "Yamask",
+    "partner": "Wild Salt Cure user",
+    "teach": [
+     "Salt Cure"
+    ],
+    "result": "unsplice",
+    "group": "yamask",
+    "import": {
+     "move": [
+      "SALT_CURE"
+     ]
+    },
+    "variant": {
+     "killer": "yamazone"
+    }
+   },
+   {
+    "n": 4,
+    "base": "Regigigas",
+    "partner": "Wild Entrainment user",
+    "teach": [
+     "Entrainment"
+    ],
+    "result": "unsplice",
+    "group": "regigigas",
+    "import": {
+     "move": [
+      "ENTRAINMENT"
+     ]
+    },
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "n": 5,
+    "base": "Teddiursa",
+    "partner": "Wild Ruination or Nature's Madness user",
+    "teach": [
+     "Ruination or Nature's Madness"
+    ],
+    "result": "unsplice",
+    "group": "teddiursa",
+    "import": {
+     "move": [
+      "RUINATION",
+      "NATURES_MADNESS"
+     ],
+     "any": true
+    }
+   },
+   {
+    "n": 6,
+    "base": "Teddiursa",
+    "partner": "Wild Gastro Acid user",
+    "teach": [
+     "Gastro Acid"
+    ],
+    "result": "unsplice",
+    "group": "teddiursa",
+    "import": {
+     "move": [
+      "GASTRO_ACID"
+     ]
+    }
+   },
+   {
+    "n": 7,
+    "base": "Yamask",
+    "partner": "Wild Leech Seed user",
+    "teach": [
+     "Leech Seed"
+    ],
+    "result": "unsplice",
+    "group": "yamask",
+    "import": {
+     "move": [
+      "LEECH_SEED"
+     ]
+    },
+    "variant": {
+     "killer": "yamazone"
+    }
+   },
+   {
+    "n": 8,
+    "base": "Yamask",
+    "partner": "Wild Soak user",
+    "teach": [
+     "Soak"
+    ],
+    "result": "unsplice",
+    "group": "yamask",
+    "import": {
+     "move": [
+      "SOAK"
+     ]
+    },
+    "variant": {
+     "killer": "yamazone"
+    }
+   },
+   {
+    "n": 9,
+    "base": "Yamask",
+    "partner": "Wild Pokémon with Sturdy",
+    "teach": [],
+    "result": "keep",
+    "group": "yamask",
+    "import": {
+     "fused": true,
+     "ability": "STURDY"
+    },
+    "variant": {
+     "killer": "yamazone"
+    }
+   },
+   {
+    "n": 10,
+    "base": "Jynx",
+    "partner": "Wild Gastro Acid user",
+    "teach": [
+     "Gastro Acid"
+    ],
+    "result": "unsplice",
+    "group": "jynx",
+    "import": {
+     "move": [
+      "GASTRO_ACID"
+     ]
+    },
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "n": 11,
+    "base": "Jynx",
+    "partner": "Wild Disable and Curse user",
+    "teach": [
+     "Curse",
+     "Disable"
+    ],
+    "result": "unsplice",
+    "group": "jynx",
+    "import": {
+     "move": [
+      "CURSE",
+      "DISABLE"
+     ]
+    },
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "n": 12,
+    "base": "Gourgeist",
+    "partner": "Wild Powder Snow user",
+    "teach": [
+     "Powder Snow"
+    ],
+    "alt": "Can be sketched instead",
+    "result": "unsplice",
+    "group": "gourgeist",
+    "import": {
+     "move": [
+      "POWDER_SNOW"
+     ]
+    }
+   },
+   {
+    "n": 13,
+    "base": "Regigigas",
+    "partner": "Wild Pokémon holding Carbos",
+    "teach": [],
+    "purpose": "Splice and unsplice to stack Carbos until maxed",
+    "result": "unsplice",
+    "group": "regigigas",
+    "import": {
+     "item": "carbos-rg"
+    },
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "n": 14,
+    "base": "Gourgeist",
+    "partner": "Wild Pokémon holding Carbos",
+    "teach": [],
+    "purpose": "Splice and unsplice to stack Carbos until maxed",
+    "result": "unsplice",
+    "group": "gourgeist",
+    "import": {
+     "item": "carbos-gg"
+    }
+   },
+   {
+    "n": 15,
+    "base": "Gourgeist",
+    "partner": "Wild Pokémon with a lure ability",
+    "teach": [],
+    "result": "keep",
+    "group": "gourgeist",
+    "import": {
+     "fused": true,
+     "ability_any": [
+      "ILLUMINATE",
+      "ARENA_TRAP",
+      "NO_GUARD",
+      "COMMANDER"
+     ]
+    },
+    "purpose": "Any lure ability works: Illuminate, Arena Trap, No Guard or Commander. Hidden ability Golurk (No Guard) also works fine.",
+    "rec": "Hidden ability Midnight Lycanroc (No Guard), the fastest sand-immune No Guard pick",
+    "rec_species": [
+     {
+      "key": "LYCANROC",
+      "hidden": true
+     }
+    ]
+   },
+   {
+    "n": 16,
+    "base": "Teddiursa",
+    "partner": "Wild Pokémon with a lure ability",
+    "teach": [],
+    "result": "keep",
+    "group": "teddiursa",
+    "import": {
+     "fused": true,
+     "ability_any": [
+      "ILLUMINATE",
+      "ARENA_TRAP",
+      "NO_GUARD",
+      "COMMANDER"
+     ]
+    },
+    "purpose": "Any lure ability works: Illuminate, Arena Trap, No Guard or Commander.",
+    "rec": "Dugtrio, or hidden ability Midnight Lycanroc (No Guard)",
+    "rec_species": [
+     {
+      "key": "DUGTRIO"
+     },
+     {
+      "key": "LYCANROC",
+      "hidden": true
+     }
+    ]
+   },
+   {
+    "n": 17,
+    "base": "Jynx",
+    "partner": "Regigigas",
+    "teach": [],
+    "result": "keep",
+    "group": "jynx",
+    "import": {
+     "fused": true,
+     "with": "REGIGIGAS"
+    },
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "n": 18,
+    "base": "Skitty",
+    "partner": "Wild Entrainment user",
+    "teach": [
+     "Entrainment"
+    ],
+    "result": "unsplice",
+    "group": "skitty",
+    "import": {
+     "move": [
+      "ENTRAINMENT"
+     ]
+    },
+    "variant": {
+     "carry": "kyogre"
+    }
+   },
+   {
+    "n": 19,
+    "base": "Skitty",
+    "partner": "Wild Gastro Acid user",
+    "teach": [
+     "Gastro Acid"
+    ],
+    "result": "unsplice",
+    "group": "skitty",
+    "import": {
+     "move": [
+      "GASTRO_ACID"
+     ]
+    },
+    "variant": {
+     "carry": "kyogre"
+    }
+   },
+   {
+    "n": 20,
+    "base": "Skitty",
+    "partner": "Wild Curse user",
+    "teach": [
+     "Curse"
+    ],
+    "result": "unsplice",
+    "group": "skitty",
+    "import": {
+     "move": [
+      "CURSE"
+     ]
+    },
+    "variant": {
+     "carry": "kyogre"
+    }
+   },
+   {
+    "n": 21,
+    "base": "Skitty",
+    "partner": "Wild Shed Tail user",
+    "teach": [
+     "Shed Tail"
+    ],
+    "result": "unsplice",
+    "group": "skitty",
+    "import": {
+     "move": [
+      "SHED_TAIL"
+     ]
+    },
+    "variant": {
+     "carry": "kyogre"
+    }
+   },
+   {
+    "n": 22,
+    "base": "Kyogre",
+    "partner": "Wild Pokémon holding Carbos",
+    "teach": [],
+    "result": "unsplice",
+    "group": "kyogre",
+    "import": {
+     "item": "carbos-ky"
+    },
+    "variant": {
+     "carry": "kyogre"
+    },
+    "purpose": "Splice and unsplice to stack Carbos until maxed"
+   },
+   {
+    "n": 23,
+    "base": "Kyogre",
+    "partner": "Skitty",
+    "teach": [],
+    "result": "keep",
+    "group": "kyogre",
+    "import": {
+     "fused": true,
+     "with": "SKITTY"
+    },
+    "variant": {
+     "carry": "kyogre"
+    },
+    "lock_note": "Keeping this fusion locks Kyogre and shifts the run into the Running Phase."
+   },
+   {
+    "n": 24,
+    "base": "Nincada",
+    "partner": "Evolve with an open slot",
+    "teach": [],
+    "result": "setup",
+    "group": "shedinja",
+    "variant": {
+     "killer": "shedinja"
+    },
+    "purpose": "Evolve Nincada with an open party slot (party under 6) and a regular Poké Ball in the bag, not a Great Ball or better. Shedinja splits off with a copy of ALL held items, so move Soul Dews, Choice Scarfs and similar onto Nincada before it evolves.",
+    "import": {
+     "species": "SHEDINJA"
+    }
+   },
+   {
+    "n": 25,
+    "base": "Shedinja",
+    "partner": "Another Shedinja",
+    "teach": [],
+    "result": "keep",
+    "group": "shedinja",
+    "variant": {
+     "killer": "shedinja"
+    },
+    "optional": true,
+    "purpose": "Not needed. Gets Splicers out of the master pool.",
+    "rec": "Optional, if you find one"
+   }
+  ]
+ },
+ "final_builds": [
+  {
+   "id": "gouot",
+   "name": "Staller",
+   "made_from": "Gourgeist + lure ability Pokémon (step 15)",
+   "moves": [
+    "Dark Void",
+    "Mat Block",
+    "Powder Snow",
+    "Trick-or-Treat"
+   ],
+   "ability": "Any lure ability",
+   "passive": "Illuminate",
+   "nature": "Jolly",
+   "vitamins": "Carbos to Speed IV",
+   "items": {
+    "Lucky Egg": 60,
+    "Golden Egg": 15,
+    "King's Rock": 3,
+    "Mini Black Hole": 1,
+    "Soul Dew": 10,
+    "Wide Lens": 3,
+    "Multi Lens": 2
+   },
+   "group": "gourgeist",
+   "import": {
+    "step": 15
+   },
+   "needs": [
+    "soul-gg",
+    "wide-pk",
+    "carbos-gg",
+    "multi-gg",
+    "kings",
+    "lucky-gg",
+    "golden-gg",
+    "mbh-gouot"
+   ],
+   "rec": "Hidden ability Midnight Lycanroc (No Guard), the fastest sand-immune No Guard pick"
+  },
+  {
+   "id": "teddiurk",
+   "name": "Runner",
+   "made_from": "Teddiursa + lure ability Pokémon (step 16)",
+   "moves": [
+    "Thief or Covet",
+    "Ruination or Nature's Madness",
+    "Roar",
+    "Gastro Acid"
+   ],
+   "ability": "Any lure ability",
+   "passive": "Run Away",
+   "nature": "Any",
+   "vitamins": "none",
+   "items": {
+    "Mini Black Hole": 1,
+    "Multi Lens": 2
+   },
+   "group": "teddiursa",
+   "import": {
+    "step": 16
+   },
+   "needs": [
+    "thief",
+    "roar",
+    "shards-teddiursa",
+    "mbh-teddiurk",
+    "multi-td"
+   ],
+   "rec": "Dugtrio, or hidden ability Midnight Lycanroc (No Guard)"
+  },
+  {
+   "id": "jynxgigas",
+   "name": "Killer Support",
+   "made_from": "Jynx + Regigigas (step 17)",
+   "moves": [
+    "Entrainment",
+    "Curse",
+    "Gastro Acid",
+    "Disable"
+   ],
+   "ability": "Normalize",
+   "passive": "Psychic Surge",
+   "nature": "Timid",
+   "vitamins": "Carbos to Speed IV",
+   "items": {
+    "Lucky Egg": 60,
+    "Golden Egg": 15,
+    "Grip Claw": 5,
+    "Mini Black Hole": 1,
+    "Mystical Rock": 2,
+    "Soul Dew": 10
+   },
+   "group": "jynx",
+   "import": {
+    "step": 17,
+    "families": [
+     "SMOOCHUM",
+     "REGIGIGAS"
+    ]
+   },
+   "needs": [
+    "soul-rg",
+    "carbos-rg",
+    "shards-jynx",
+    "lucky-rg",
+    "golden-rg",
+    "mbh-jynx",
+    "grip",
+    "mystic"
+   ],
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "kyogre",
+   "name": "Killer Support",
+   "made_from": "Kyogre + Skitty (step 23)",
+   "moves": [
+    "Entrainment",
+    "Gastro Acid",
+    "Shed Tail",
+    "Curse"
+   ],
+   "ability": "Normalize",
+   "passive": "Mold Breaker",
+   "nature": "Timid",
+   "vitamins": "Carbos to Speed IV",
+   "items": {
+    "Lucky Egg": 60,
+    "Golden Egg": 15,
+    "Grip Claw": 5,
+    "Mini Black Hole": 1,
+    "Mystical Rock": 2,
+    "Soul Dew": 10
+   },
+   "notes": [
+    "Water/Normal. Before the fusion Kyogre carries with Endure, Ice Beam, Water Pulse and Water Spout."
+   ],
+   "group": "kyogre",
+   "import": {
+    "step": 23,
+    "families": [
+     "KYOGRE",
+     "SKITTY"
+    ]
+   },
+   "needs": [
+    "soul-ky",
+    "carbos-ky",
+    "shards-ky",
+    "lucky-ky",
+    "golden-ky",
+    "mbh-ky",
+    "grip-ky",
+    "mystic-ky"
+   ],
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "yamazone",
+   "name": "Boss Killer",
+   "made_from": "Yamask + Sturdy Pokémon (step 9)",
+   "moves": [
+    "Heal Block",
+    "Leech Seed",
+    "Soak",
+    "Salt Cure"
+   ],
+   "ability": "Sturdy",
+   "passive": "Purifying Salt",
+   "nature": "Any",
+   "vitamins": "none",
+   "items": {
+    "Leftovers": 4,
+    "Wide Lens": 2
+   },
+   "group": "yamask",
+   "import": {
+    "step": 9
+   },
+   "needs": [
+    "lefto",
+    "wide-ym"
+   ],
+   "variant": {
+    "killer": "yamazone"
+   }
+  },
+  {
+   "id": "shedinja",
+   "name": "Boss Killer",
+   "made_from": "Shedinja split from Nincada (step 24)",
+   "moves": [
+    "Nature's Madness",
+    "Conversion",
+    "Heal Block",
+    "Salt Cure"
+   ],
+   "ability": "Wonder Guard",
+   "passive": "Magic Guard",
+   "nature": "Any",
+   "vitamins": "none",
+   "items": {
+    "Wide Lens": 2
+   },
+   "notes": [
+    "Bug/Ghost. Wonder Guard: only super effective hits connect.",
+    "Nature's Madness, Conversion and Salt Cure come from move tutors. Heal Block is learned at level 41.",
+    "Threat: Slither Wing (Bug/Fighting, Scrappy passive) with Dual Wingbeat is super effective on Bug/Ghost and breaks Wonder Guard. Once Normalized, Dual Wingbeat hits Ghost neutrally through Scrappy and Wonder Guard blocks it. Fairy typing from Conversion also blocks it. Entrainment only replaces the active ability, so Slither Wing keeps Scrappy."
+   ],
+   "group": "shedinja",
+   "import": {
+    "step": 24
+   },
+   "needs": [
+    "wide-sh"
+   ],
+   "variant": {
+    "killer": "shedinja"
+   }
+  }
+ ],
+ "spare_slots": "Two team slots are free for luck. The guide strongly recommends a Mold Breaker Pokémon holding Gastro Acid, mainly for Gholdengo, if Teddiursa lacks Core Enforcer.",
+ "playbook": [
+  {
+   "id": "standard-boss",
+   "title": "Standard boss",
+   "steps": [
+    "Killer Support leads: Tera Ghost, then Entrainment on the boss so its attacks stop hitting.",
+    "Curse to start damage.",
+    "Swap to Boss Killer and use its moves until the boss looks like it dies next turn, or each move has been used once.",
+    "Bring in Staller so Triple Lure is active and the next wave starts as a double battle."
+   ]
+  },
+  {
+   "id": "complicated-boss",
+   "title": "Complicated boss (Slither Wing is the main counter)",
+   "steps": [
+    {
+     "text": "Use only Boss Killer and open with Leech Seed to heal to full each turn.",
+     "variant": {
+      "killer": "yamazone"
+     }
+    },
+    {
+     "text": "Shedinja's Wonder Guard blocks a Normalized Dual Wingbeat, and Fairy typing from Conversion blocks it too.",
+     "variant": {
+      "killer": "shedinja"
+     }
+    },
+    "When the boss is about to die, let it knock out one of your Pokémon so Staller enters safely.",
+    "If needed Staller can use Mat Block or Dark Void for a couple of turns."
+   ]
+  },
+  {
+   "id": "safe-capture",
+   "title": "Capturing safely",
+   "steps": [
+    "Roar away the Pokémon you do not want.",
+    "Normalize the one you want to catch.",
+    "Throw regular balls. Ruination or Nature's Madness damages it, Dark Void puts it to sleep for better odds.",
+    "Slow but saves Master Balls. Works on bosses too."
+   ]
+  },
+  {
+   "id": "xx0-capture",
+   "title": "Capturing on XX0 waves",
+   "steps": [
+    "Use Trick-or-Treat on the target to make it Ghost type, immune to its partner's spread moves such as Discharge.",
+    "After Normalize, all your Pokémon become immune to both opponents within two turns, which cuts the stalling time a lot."
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "id": "regigigas",
+   "name": "Regigigas",
+   "family": [
+    "REGIGIGAS"
+   ],
+   "note": "Fuses into Killer Support at the end",
+   "sprite": "REGIGIGAS",
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "jynx",
+   "name": "Jynx",
+   "family": [
+    "SMOOCHUM"
+   ],
+   "note": "Smoochum line, becomes Killer Support",
+   "sprite": "JYNX",
+   "variant": {
+    "carry": "regigigas"
+   }
+  },
+  {
+   "id": "kyogre",
+   "name": "Kyogre",
+   "family": [
+    "KYOGRE"
+   ],
+   "note": "Carries the run, then fuses with Skitty into Killer Support",
+   "sprite": "KYOGRE",
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "skitty",
+   "name": "Skitty",
+   "family": [
+    "SKITTY"
+   ],
+   "note": "Learns the Killer Support moves, then fuses onto Kyogre",
+   "sprite": "SKITTY",
+   "variant": {
+    "carry": "kyogre"
+   }
+  },
+  {
+   "id": "gourgeist",
+   "name": "Gourgeist",
+   "family": [
+    "PUMPKABOO"
+   ],
+   "note": "Pumpkaboo line, becomes Staller",
+   "sprite": "GOURGEIST"
+  },
+  {
+   "id": "teddiursa",
+   "name": "Teddiursa",
+   "family": [
+    "TEDDIURSA"
+   ],
+   "note": "Becomes Runner",
+   "sprite": "TEDDIURSA"
+  },
+  {
+   "id": "yamask",
+   "name": "Yamask",
+   "family": [
+    "YAMASK"
+   ],
+   "note": "Becomes Boss Killer",
+   "sprite": "YAMASK",
+   "variant": {
+    "killer": "yamazone"
+   }
+  },
+  {
+   "id": "shedinja",
+   "name": "Shedinja",
+   "family": [
+    "NINCADA"
+   ],
+   "note": "Splits off Nincada, becomes Boss Killer",
+   "sprite": "SHEDINJA",
+   "variant": {
+    "killer": "shedinja"
+   }
+  },
+  {
+   "id": "team",
+   "name": "Team-wide",
+   "family": []
+  }
+ ],
+ "migrations": {
+  "i:mbh": [
+   "i:mbh-gouot",
+   "i:mbh-teddiurk",
+   "i:mbh-jynx"
+  ],
+  "i:shards": [
+   "i:shards-teddiursa",
+   "i:shards-jynx"
+  ]
+ },
+ "how_to_play": {
+  "intro": "First, Regigigas does all the fighting while you collect what your team needs. Then you switch to your final team, and most waves become quick double battles. You only really fight the bosses.",
+  "phases": [
+   {
+    "id": "carry",
+    "title": "Regigigas does the fighting",
+    "when": "Start of the run until step 17",
+    "points": [
+     "Regigigas has the Normalize ability. It turns all of its moves into Normal moves and makes them stronger.",
+     "Its passive, Scrappy, lets Normal moves hit Ghost types too.",
+     "Give Regigigas every Silk Scarf you find. They make Normal moves stronger. This helps most at the start, so Regigigas can knock out enemies in one hit.",
+     "Rock Slide or Land's Wrath hits both enemies in a double battle. Darkest Lariat is for hitting one enemy.",
+     "Put Pumpkaboo second in your team. Its Illuminate passive brings more double battles. Keep one Lure going too, so normal waves are double battles.",
+     "The run can feel slow at first. It gets faster once you do the first fusion (Smeargle onto Pumpkaboo) and get the Lock Capsule."
+    ],
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "id": "carry-ky",
+    "title": "Kyogre does the fighting",
+    "when": "Start of the run until step 23",
+    "variant": {
+     "carry": "kyogre"
+    },
+    "points": [
+     "Kyogre carries with Endure, Ice Beam, Water Pulse and Water Spout.",
+     "Put Pumpkaboo second in your team. Its Illuminate passive brings more double battles. Keep one Lure going too, so normal waves are double battles.",
+     "The run can feel slow at first. It gets faster once you do the first fusion (Smeargle onto Pumpkaboo) and get the Lock Capsule."
+    ]
+   },
+   {
+    "id": "build",
+    "title": "Collect everything",
+    "when": "At the same time as part 1",
+    "points": [
+     "You work on Items, Splicing and Final fusions all at once.",
+     "Items are rewards, so take the ones you need whenever they show up, right from the first wave.",
+     "For splicing, always do the first fusion (Smeargle onto Pumpkaboo) first. After that, do whatever is rarest, or whatever you can find in the biome you are in.",
+     "When you get to a new biome, type its name in the I'm in box at the top. It shows what you can get there.",
+     {
+      "text": "You only need Land's Wrath and Darkest Lariat in this part, while Regigigas is still doing the fighting.",
+      "variant": {
+       "carry": "regigigas"
+      }
+     }
+    ]
+   },
+   {
+    "id": "switch",
+    "title": "The big switch",
+    "when": "Splicing step 17",
+    "points": [
+     "Fuse Regigigas onto Jynx, teach it Entrainment, and keep them fused. This is Killer Support.",
+     "After this, Regigigas can't sweep with Normalize anymore. That's OK, because your new team takes over.",
+     "You could keep Land's Wrath on it, but the four Killer Support moves are more important.",
+     "If you do want to keep Land's Wrath, keep it when you fuse. After the fusion you can't get Regigigas's egg moves back, because Jynx is the main Pokémon and only Jynx's egg moves can be relearned."
+    ],
+    "variant": {
+     "carry": "regigigas"
+    }
+   },
+   {
+    "id": "switch-ky",
+    "title": "The big switch",
+    "when": "Splicing step 23",
+    "variant": {
+     "carry": "kyogre"
+    },
+    "points": [
+     "Fuse Skitty onto Kyogre and keep them fused. This is Killer Support: Water/Normal, Normalize, passive Mold Breaker.",
+     "Its running moves are Entrainment, Gastro Acid, Shed Tail and Curse, spliced onto Skitty in steps 18 to 21, so Kyogre keeps carrying until this fusion."
+    ]
+   },
+   {
+    "id": "loop",
+    "title": "Running through waves",
+    "when": "After step 17",
+    "points": [
+     "Staller and Runner take care of normal waves.",
+     "Lure abilities make double battles more likely. Staller and Runner each get one from their fusion (any lure ability: Illuminate, Arena Trap, No Guard or Commander), and Staller also has Illuminate as its passive.",
+     "Staller on its own is enough to make normal waves double battles. With both of them out you get three lures.",
+     "Double battle chance is worked out when the next battle is created: base 8 (32 when the next wave is a multiple of 10), divided by 4 for each lure effect (Lure items, plus each Pokémon on the field with a lure ability).",
+     "Waves ending in 0 skip the reward screen, so you can't swap before the next wave is created. That's why Staller goes out at the end of x50 waves. On other waves, swapping on the reward screen does count.",
+     "Sometimes you have to let one of your Pokémon faint so you can switch safely.",
+     "Bosses are for your boss team. See Standard boss and Complicated boss in In the run.",
+     "Only catch Pokémon the slow way when you are out of Master Balls. See Capturing safely. It's best to always get a new Master Ball after you use one, so you never run out."
+    ]
+   }
+  ]
+ },
+ "variants": {
+  "carry": {
+   "label": "Carry",
+   "options": [
+    {
+     "id": "regigigas",
+     "name": "Regigigas"
+    },
+    {
+     "id": "kyogre",
+     "name": "Kyogre/Skitty"
+    }
+   ]
+  },
+  "killer": {
+   "label": "Boss killer",
+   "options": [
+    {
+     "id": "yamazone",
+     "name": "Yamazone"
+    },
+    {
+     "id": "shedinja",
+     "name": "Shedinja"
+    }
+   ]
+  }
+ },
+ "optional_slot": {
+  "title": "Optional 5th slot: Prankster",
+  "moves": [
+   "Tailwind",
+   "Psychic Terrain"
+  ],
+  "note": "A Prankster Pokémon with Tailwind and Psychic Terrain. 100% optional, it does not count toward completion."
+ },
+ "move_order": {
+  "note": "Draft until Lucy or Grex confirm.",
+  "entries": [
+   {
+    "build": "shedinja",
+    "text": "Nature's Madness in slot 1. Conversion copies the type of the first move slot, so Shedinja becomes pure Fairy. That removes most weaknesses and keeps Wonder Guard useful."
+   },
+   {
+    "build": "*",
+    "text": "Any order."
+   }
+  ]
+ }
+}
