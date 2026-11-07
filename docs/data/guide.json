@@ -727,6 +727,21 @@
    "variant": {
     "killer": "shedinja"
    }
+  },
+  {
+   "id": "multi-sh",
+   "name": "Multi Lens",
+   "holder": "Shedinja",
+   "qty": 2,
+   "source": "variant",
+   "group": "shedinja",
+   "note": "Two Multi Lens give Nature's Madness extra hits, which breaks more boss shields.",
+   "import": {
+    "held": "MULTI_LENS"
+   },
+   "variant": {
+    "killer": "shedinja"
+   }
   }
  ],
  "splicing": {
@@ -1376,19 +1391,21 @@
    "nature": "Any",
    "vitamins": "none",
    "items": {
-    "Wide Lens": 2
+    "Wide Lens": 2,
+    "Multi Lens": 2
    },
    "notes": [
     "Bug/Ghost. Wonder Guard: only super effective hits connect.",
     "Nature's Madness, Conversion and Salt Cure come from move tutors. Heal Block is learned at level 41.",
-    "Threat: Slither Wing (Bug/Fighting, Scrappy passive) with Dual Wingbeat is super effective on Bug/Ghost and breaks Wonder Guard. Once Normalized, Dual Wingbeat hits Ghost neutrally through Scrappy and Wonder Guard blocks it. Fairy typing from Conversion also blocks it. Entrainment only replaces the active ability, so Slither Wing keeps Scrappy."
+    "Wonder Guard is the counter to Slither Wing's Dual Wingbeat. Use Conversion with Nature's Madness in slot 1 first, so Shedinja is pure Fairy and Dual Wingbeat is no longer super effective."
    ],
    "group": "shedinja",
    "import": {
     "step": 24
    },
    "needs": [
-    "wide-sh"
+    "wide-sh",
+    "multi-sh"
    ],
    "variant": {
     "killer": "shedinja"
@@ -1418,7 +1435,7 @@
      }
     },
     {
-     "text": "Shedinja's Wonder Guard blocks a Normalized Dual Wingbeat, and Fairy typing from Conversion blocks it too.",
+     "text": "Shedinja's Wonder Guard counters Dual Wingbeat. Use Conversion first so it is pure Fairy and Dual Wingbeat cannot connect.",
      "variant": {
       "killer": "shedinja"
      }
