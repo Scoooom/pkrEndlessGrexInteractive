@@ -1,7 +1,7 @@
 # Endless Entrainment Normalize Build
 
 Guide by Grex. Source: https://wiki.pokerogue.net/guides:endless_normalize_build
-This is a restructured, paraphrased copy. `guide.json` holds the same data in machine form.
+This is a restructured, paraphrased copy. `docs/data/guide.json` holds the same data in machine form.
 
 **Idea:** give the boss Normalize through Entrainment so its attacks cannot hurt you, then whittle it down. Four fused team slots.
 

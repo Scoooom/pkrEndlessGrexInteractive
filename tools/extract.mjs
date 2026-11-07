@@ -5,7 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const [, , SRC = "/opt/pokerogue", GUIDE = "guide.json", OUT = "spawns.json", IDS_OUT = "pokerogue-ids.json"] = process.argv;
+const [, , SRC = "/opt/pokerogue", GUIDE = "docs/data/guide.json", OUT = "docs/data/spawns.json", IDS_OUT = "docs/data/pokerogue-ids.json"] = process.argv;
 const speciesDir = path.join(SRC, "src/data/balance/species");
 const biomeDir = path.join(SRC, "src/data/balance/biomes");
 

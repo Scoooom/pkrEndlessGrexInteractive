@@ -4,10 +4,10 @@
 PokeRogue keeps each species' front sprite in assets/images/pokemon/<dex>[-form].png. Most are
 sprite sheets (animation frames) described by a matching .json atlas; a few are a single image.
 This takes the first frame of the normal (non-shiny) sprite, trims the empty border and writes
-public/sprites/<SPECIES_KEY>.png, which the Dockerfile copies into the image.
+docs/sprites/<SPECIES_KEY>.png, which GitHub Pages serves with the rest of docs/.
 
 Needs Pillow. Run after tools/extract.mjs (it reads spawns.json and pokerogue-ids.json):
-  python3 tools/sprites.py /opt/pokerogue guide.json spawns.json pokerogue-ids.json public/sprites
+  python3 tools/sprites.py /opt/pokerogue    (defaults: docs/data/*.json in, docs/sprites out)
 """
 import json
 import os
@@ -17,10 +17,10 @@ from PIL import Image
 
 SRC, GUIDE, SPAWNS, IDS, OUT = (sys.argv[1:] + [None] * 5)[:5]
 SRC = SRC or "/opt/pokerogue"
-GUIDE = GUIDE or "guide.json"
-SPAWNS = SPAWNS or "spawns.json"
-IDS = IDS or "pokerogue-ids.json"
-OUT = OUT or "public/sprites"
+GUIDE = GUIDE or "docs/data/guide.json"
+SPAWNS = SPAWNS or "docs/data/spawns.json"
+IDS = IDS or "docs/data/pokerogue-ids.json"
+OUT = OUT or "docs/sprites"
 SPRITE_DIR = os.path.join(SRC, "assets/images/pokemon")
 
 

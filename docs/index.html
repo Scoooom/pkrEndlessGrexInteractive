@@ -378,7 +378,7 @@ details .inner ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-
 <aside class="fab" aria-label="Checklist actions">
   <button class="fab-btn" id="import-btn" type="button" title="Import a PokeRogue session save">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg><span>Import save</span></button>
-  <button class="fab-btn danger" id="reset" type="button" title="Clear all progress on every device">
+  <button class="fab-btn danger" id="reset" type="button" title="Clear all progress in this browser">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8M4 4v4.5h4.5"/></svg><span>Reset all</span></button>
   <!-- no accept filter: iOS greys out .prsv files it has no type for; the file is checked after picking -->
   <input type="file" id="import-file" hidden>
@@ -396,6 +396,8 @@ details .inner ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; max-
 </div>
 
 <script src="js/store.js"></script>
+<script src="js/session.js"></script>
+<script src="js/import-map.js"></script>
 <script src="js/variant.js"></script>
 <script src="js/app.js"></script>
 </body>

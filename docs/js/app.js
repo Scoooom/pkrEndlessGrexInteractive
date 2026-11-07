@@ -682,10 +682,9 @@
       $("import-body").innerHTML = '<p class="imp-err">Could not import: ' + esc(bad) + '. Pick the session save (.prsv) exported from PokeRogue.</p>';
       return;
     }
-    f.text().then(function (text) {
-      return fetch("api/import?carry=" + encodeURIComponent(variant.carry || "") + "&killer=" + encodeURIComponent(variant.killer || ""), { method: "POST", headers: { "Content-Type": "text/plain" }, body: text });
-    }).then(function (r) {
-      return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || "HTTP " + r.status); return j; });
+    // everything runs in the browser: decode the save, work out the build, map it onto the checklist
+    Promise.all([f.text().then(window.EndlessSession.decodeSave), loadIds()]).then(function (res) {
+      return importSession(res[0], res[1]);
     }).then(showPreview).catch(function (e) {
       $("import-body").innerHTML = '<p class="imp-err">Could not import: ' + esc(e.message) + '. Pick the session save (.prsv) exported from PokeRogue.</p>';
     });
@@ -694,6 +693,31 @@
   function variantName(k, id) {
     var o = rawGuide.variants[k].options.filter(function (x) { return x.id === id; })[0];
     return o ? o.name : id;
+  }
+  var idsPromise = null;   // PokeRogue id maps, only needed for import, loaded on first use
+  function loadIds() {
+    idsPromise = idsPromise || fetch("data/pokerogue-ids.json").then(function (r) { if (!r.ok) throw new Error("import data missing"); return r.json(); });
+    idsPromise.catch(function () { idsPromise = null; });
+    return idsPromise;
+  }
+  // the save's party decides the build where it is clear; the page's toggle fills the rest.
+  // Values are capped at what the guide for that build needs.
+  function importSession(session, ids) {
+    var found = window.EndlessImport.detectVariant(session, ids);
+    var v = { carry: found.carry || variant.carry, killer: found.killer || variant.killer };
+    var g = window.EndlessVariant.applyVariant(rawGuide, v);
+    var cap = {};
+    g.starters.forEach(function (s) { cap["s:" + s.id] = 1; });
+    g.items.forEach(function (it) { cap["i:" + it.id] = it.qty || 1; if (it.max_iv !== undefined) cap["iv:" + it.id] = 31; });
+    g.splicing.steps.forEach(function (p) { if (!p.optional) cap["p:" + p.n] = 1; });
+    g.final_builds.forEach(function (b) { cap["b:" + b.id] = 1; b.moves.forEach(function (_, j) { cap["m:" + b.id + ":" + j] = 1; }); });
+    var r = window.EndlessImport.mapSession(session, g, ids);
+    Object.keys(r.values).forEach(function (k) {
+      var n = Math.round(Number(r.values[k]));
+      r.values[k] = k in cap && isFinite(n) ? Math.max(0, Math.min(cap[k], n)) : 0;
+    });
+    r.variant = v; r.detected = found;
+    return r;
   }
   function showPreview(r) {
     importValues = r.values;
@@ -744,10 +768,10 @@
 
   // ---------- boot
   Promise.all([
-    fetch("api/guide").then(function (r) { return r.json(); }),
-    fetch("api/spawns").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    fetch("data/guide.json").then(function (r) { return r.json(); }),
+    fetch("data/spawns.json").then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
   ]).then(function (res) {
     spawnData = res[1]; rawGuide = res[0]; render();
     return store.start();
-  }).then(update).catch(function () { $("app").innerHTML = '<p class="loading">Could not reach the server. Reload to try again.</p>'; });
+  }).then(update).catch(function () { $("app").innerHTML = '<p class="loading">Could not load the guide data. Reload to try again.</p>'; });
 })();
