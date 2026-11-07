@@ -6,9 +6,8 @@ in `docs/` runs in the browser. Progress lives in each browser's localStorage, a
 
 ## Hosting
 
-- **GitHub Pages:** in the repo settings, set Pages > Source to "Deploy from a branch", branch
-  `main`, folder `/docs`. `docs/CNAME` sets the custom domain (endless.scooom.com) and
-  `docs/.nojekyll` skips Jekyll.
+- **GitHub Pages:** `.github/workflows/pages.yml` publishes `docs/` on every push to `main`.
+  Pages > Source is set to "GitHub Actions"; the custom domain is set in the Pages settings.
 - **Locally:** `docker compose up -d --build` runs `server.js`, a plain static server for testing.
   Any static server pointed at `docs/` works too. Save import needs https or localhost (Web Crypto).
 
