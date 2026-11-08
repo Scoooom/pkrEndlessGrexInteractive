@@ -248,7 +248,7 @@
           : "neither has its starters unlocked yet: " + whyNot(V.options) + ".";
       } else {
         var skipped = V.options.slice(0, V.options.indexOf(ok[0]));
-        txt = ok.length ? optName(k, c.pick[k]) + (skipped.length ? ", since " + whyNot(skipped) : "") + "."
+        txt = ok.length ? optName(k, c.pick[k]) + (c.pick[k] !== ok[0].id ? (c.pick[k] === variant[k] ? ", your current choice." : ", so the team fits the 15 point limit.") : (skipped.length ? ", since " + whyNot(skipped) : "") + ".")
           : "none has it yet. Any of " + joinOr(V.options.map(function (o) { return o.name; })) + " works.";
         // nobody can do it: the blocked starter's line says the others would do too
         if (!ok.length) rows.forEach(function (p) {

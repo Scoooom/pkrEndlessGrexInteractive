@@ -179,7 +179,8 @@
       });
       var ok = V.options.filter(function (o) { return st[o.id].ok; });
       if (V.plan_pick === "only" && ok.length === 1) pick[k] = ok[0].id;
-      if (V.plan_pick === "first" && ok.length) pick[k] = ok[0].id;
+      // "first" keeps the player's current choice when it works, otherwise takes the first that does
+      if (V.plan_pick === "first" && ok.length) pick[k] = st[current[k]] && st[current[k]].ok ? current[k] : ok[0].id;
     });
     // "first" keys: prefer the first unlocked option whose team fits the point limit at this save's
     // current costs (Dracovish at 5 can push a Regigigas team over, Samurott at 1 does not)
@@ -195,7 +196,8 @@
       var V = guide.variants[k];
       if (V.plan_pick !== "first" || total() <= info.value_limit) return;
       var keep = pick[k];
-      var fit = V.options.filter(function (o) {
+      var order = V.options.filter(function (o) { return o.id === keep; }).concat(V.options.filter(function (o) { return o.id !== keep; }));
+      var fit = order.filter(function (o) {
         if (!status[k][o.id].ok) return false;
         pick[k] = o.id; return total() <= info.value_limit;
       })[0];
