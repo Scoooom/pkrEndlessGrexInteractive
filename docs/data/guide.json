@@ -568,7 +568,11 @@
    "alternatives": [],
    "role": "Sketch saves splicers. Its job is the first fusion onto Pumpkaboo, teaching Dark Void. Gastly, Drowzee, Lunatone and Espurr also have the Dark Void egg move and can do this instead (Dark Void starter in Start here), but only Smeargle brings Sketch, which saves 2 splicers for Staller.",
    "import": {
-    "step": 1
+    "step": 1,
+    "family": "SMEARGLE",
+    "knows": [
+     "DARK_VOID"
+    ]
    },
    "sprite": "SMEARGLE",
    "plan": {
@@ -595,7 +599,11 @@
    "alternatives": [],
    "role": "Stands in for Smeargle. Its job is the first fusion onto Pumpkaboo, teaching Dark Void from its egg move. It has no Sketch, so Mat Block and Powder Snow come from wild fusions (steps 2 and 12).",
    "import": {
-    "step": 1
+    "step": 1,
+    "family": "DROWZEE",
+    "knows": [
+     "DARK_VOID"
+    ]
    },
    "sprite": "DROWZEE",
    "variant": {
@@ -621,7 +629,11 @@
    "alternatives": [],
    "role": "Stands in for Smeargle. Its job is the first fusion onto Pumpkaboo, teaching Dark Void from its egg move. It has no Sketch, so Mat Block and Powder Snow come from wild fusions (steps 2 and 12).",
    "import": {
-    "step": 1
+    "step": 1,
+    "family": "ESPURR",
+    "knows": [
+     "DARK_VOID"
+    ]
    },
    "sprite": "ESPURR",
    "variant": {
@@ -647,7 +659,11 @@
    "alternatives": [],
    "role": "Stands in for Smeargle. Its job is the first fusion onto Pumpkaboo, teaching Dark Void from its egg move. It has no Sketch, so Mat Block and Powder Snow come from wild fusions (steps 2 and 12).",
    "import": {
-    "step": 1
+    "step": 1,
+    "family": "LUNATONE",
+    "knows": [
+     "DARK_VOID"
+    ]
    },
    "sprite": "LUNATONE",
    "variant": {
@@ -673,7 +689,11 @@
    "alternatives": [],
    "role": "Stands in for Smeargle. Its job is the first fusion onto Pumpkaboo, teaching Dark Void from its egg move. It has no Sketch, so Mat Block and Powder Snow come from wild fusions (steps 2 and 12).",
    "import": {
-    "step": 1
+    "step": 1,
+    "family": "GASTLY",
+    "knows": [
+     "DARK_VOID"
+    ]
    },
    "sprite": "GASTLY",
    "variant": {

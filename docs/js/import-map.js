@@ -135,7 +135,8 @@
     // starters
     guide.starters.forEach(function (s) {
       var r = s.import || {}, k = "s:" + s.id;
-      if (r.step) { put(k, values["p:" + r.step] ? 1 : 0, values["p:" + r.step] ? "inferred from splice step " + r.step : "splice step " + r.step + " not done"); return; }
+      // done once its splice step is done (it is fused away then), or while it is in the party (r.family)
+      if (r.step && (values["p:" + r.step] || !r.family)) { put(k, values["p:" + r.step] ? 1 : 0, values["p:" + r.step] ? "inferred from splice step " + r.step : "splice step " + r.step + " not done"); return; }
       var ms = members.filter(function (m) {
         var want = r.hidden ? 2 : r.ability_index;
         if (m.fam === r.family) return want == null || m.p.abilityIndex === want;
