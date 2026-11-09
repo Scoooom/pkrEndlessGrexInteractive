@@ -779,6 +779,28 @@
    }
   },
   {
+   "id": "focus-sup",
+   "name": "Focus Band",
+   "holder": "Killer Support",
+   "qty": 5,
+   "source": "final_builds",
+   "group": "mb",
+   "import": {
+    "held": "FOCUS_BAND"
+   }
+  },
+  {
+   "id": "reviver-sup",
+   "name": "Reviver Seed",
+   "holder": "Killer Support",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "mb",
+   "import": {
+    "held": "REVIVER_SEED"
+   }
+  },
+  {
    "id": "soul-rg",
    "name": "Soul Dew",
    "holder": "Regigigas",
@@ -1033,6 +1055,28 @@
    "group": "killer",
    "import": {
     "held": "SHELL_BELL"
+   }
+  },
+  {
+   "id": "focus-k",
+   "name": "Focus Band",
+   "holder": "Boss Killer",
+   "qty": 5,
+   "source": "final_builds",
+   "group": "killer",
+   "import": {
+    "held": "FOCUS_BAND"
+   }
+  },
+  {
+   "id": "reviver-k",
+   "name": "Reviver Seed",
+   "holder": "Boss Killer",
+   "qty": 1,
+   "source": "final_builds",
+   "group": "killer",
+   "import": {
+    "held": "REVIVER_SEED"
    }
   }
  ],
@@ -1600,7 +1644,9 @@
    "items": {
     "Lucky Egg": 60,
     "Golden Egg": 18,
-    "Soul Dew": 10
+    "Soul Dew": 10,
+    "Focus Band": 5,
+    "Reviver Seed": 1
    },
    "notes": [
     "Tera Ghost."
@@ -1679,7 +1725,9 @@
        "carbos-ky",
        "shards-ky",
        "lucky-ky",
-       "golden-ky"
+       "golden-ky",
+       "focus-sup",
+       "reviver-sup"
       ]
      },
      {
@@ -1691,7 +1739,9 @@
        "carbos-rg",
        "shards-ky",
        "lucky-rg",
-       "golden-rg"
+       "golden-rg",
+       "focus-sup",
+       "reviver-sup"
       ]
      }
     ]
@@ -1713,10 +1763,12 @@
    "vitamins": "none",
    "items": {
     "Leftovers": 4,
-    "Shell Bell": 4
+    "Shell Bell": 4,
+    "Focus Band": 5,
+    "Reviver Seed": 1
    },
    "notes": [
-    "Threat: Slither Wing (Bug/Fighting, Scrappy passive) with Dual Wingbeat. Once Normalized, Dual Wingbeat hits Ghost through Scrappy, and its two hits get past Sturdy. Entrainment only replaces the active ability, so Slither Wing keeps Scrappy."
+    "Threat: Slither Wing (Bug/Fighting, Scrappy passive). Scrappy lets its Fighting moves hit Ghost, and multi-hit moves like Dual Wingbeat get past Sturdy. Counter: Killer Support uses Gastro Acid on it first, which also turns off its passive, so no Scrappy. Then Curse (skip it if it fails). Then Boss Killer comes in: Leech Seed, then Ruination. Killer Support can also Disable Dual Wingbeat."
    ],
    "group": "killer",
    "import": {
@@ -1724,7 +1776,9 @@
    },
    "needs": [
     "lefto",
-    "shell-k"
+    "shell-k",
+    "focus-k",
+    "reviver-k"
    ]
   }
  ],
@@ -1742,11 +1796,21 @@
   },
   {
    "id": "complicated-boss",
-   "title": "Complicated boss (Slither Wing is the main counter)",
+   "title": "Complicated boss",
    "steps": [
     "Use only Boss Killer and open with Leech Seed to heal to full each turn.",
     "When the boss is about to die, let it knock out one of your Pokémon so Staller enters safely.",
     "If needed Staller can use Mat Block or Dark Void for a couple of turns."
+   ]
+  },
+  {
+   "id": "slither-wing",
+   "title": "Slither Wing boss",
+   "steps": [
+    "Killer Support goes first and uses Gastro Acid on Slither Wing. It turns off its passive too, so Scrappy is gone and its Fighting moves can't hit your Ghost types.",
+    "Then Curse. If it fails, skip it.",
+    "Switch to Boss Killer: Leech Seed, then spam Ruination.",
+    "Backup: Killer Support can Disable Dual Wingbeat instead."
    ]
   },
   {
