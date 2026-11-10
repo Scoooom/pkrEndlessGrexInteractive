@@ -174,7 +174,7 @@
 
     var summary = {
       wave: session.waveIndex,
-      biome: session.arena && ids.biomes ? nice(ids.biomes[session.arena.biome] || "") : "",
+      biome: session.arena && ids.biomes ? (function (b) { return (ids.biomeNames && ids.biomeNames[b]) || nice(b || ""); })(ids.biomes[session.arena.biome]) : "",
       party: members.map(function (m) { return m.label + " Lv " + m.p.level; }),
       saved: session.timestamp || null,
     };

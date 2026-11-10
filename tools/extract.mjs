@@ -65,10 +65,18 @@ for (const f of fs.readdirSync(speciesDir).filter((f) => f.endsWith(".ts"))) {
 }
 
 // ---------- biomes: species -> [{biome, tier, times}]
+// names as the game shows them in English (GRASS is "Grassy Field", RUINS is "Ancient Ruins");
+// END stays "End", the game shows "???"
+const biomeLocale = JSON.parse(fs.readFileSync(path.join(SRC, "locales/en/biomes.json"), "utf8"));
+function biomeName(id) {
+  const key = id.toLowerCase().replace(/_([a-z])/g, (_, c) => c.toUpperCase());
+  const n = biomeLocale[key];
+  return n && !/^\?+$/.test(n) ? n : nice(id);
+}
 const spawns = {};
 for (const f of fs.readdirSync(biomeDir).filter((f) => f.endsWith(".ts"))) {
   const text = fs.readFileSync(path.join(biomeDir, f), "utf8");
-  const biome = nice((text.match(/biomeId:\s*BiomeId\.([A-Z_]+)/) || [, f.replace(".ts", "").replace(/-/g, "_")])[1]);
+  const biome = biomeName((text.match(/biomeId:\s*BiomeId\.([A-Z_]+)/) || [, f.replace(".ts", "").replace(/-/g, "_").toUpperCase()])[1]);
   const pool = text.slice(text.indexOf("pokemonPool"), text.indexOf("trainerPool") > 0 ? text.indexOf("trainerPool") : undefined);
   for (const t of pool.split(/\[BiomePoolTier\.([A-Z_]+)\]\s*:\s*\{/).reduce((a, x, i, arr) => (i % 2 ? a.concat([[x, arr[i + 1]]]) : a), [])) {
     const [tier, tbody] = t;
@@ -189,6 +197,7 @@ fs.writeFileSync(IDS_OUT, JSON.stringify({
   species: parseEnum("src/enums/species-id.ts"),
   types: parseEnum("src/enums/pokemon-type.ts"),
   biomes: parseEnum("src/enums/biome-id.ts"),
+  biomeNames: Object.fromEntries(Object.values(parseEnum("src/enums/biome-id.ts")).map((b) => [b, biomeName(b)])),
   family,
   abilityIds: parseEnum("src/enums/ability-id.ts"),
   // per species, forms in save order: [ability1, ability2, hidden, baseSpd], to read a fusion's live ability
