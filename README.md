@@ -22,3 +22,8 @@ python3 tools/sprites.py /opt/pokerogue    # needs Pillow, writes docs/sprites
 
 `tools/sprites.py` cuts the first frame of each needed Pokémon's normal (non-shiny) front sprite
 out of `assets/images/pokemon` (single images or sprite sheets) into `docs/sprites/<SPECIES>.png`.
+
+## Purging Cloudflare
+
+`tools/purge-cache.sh` purges the Cloudflare cache for `endless.scooom.com` only (`--dry-run` to preview).
+It reads the API token from `/opt/endless/.cloudflare`, which is git-ignored.

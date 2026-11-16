@@ -998,6 +998,19 @@
    }
   },
   {
+   "id": "wide-gg",
+   "name": "Wide Lens",
+   "holder": "Gourgeist",
+   "qty": 3,
+   "source": "variant",
+   "group": "gourgeist",
+   "optional": true,
+   "note": "Only needed if Staller's lure ability isn't No Guard. Without No Guard, Dark Void misses a lot.",
+   "import": {
+    "held": "WIDE_LENS"
+   }
+  },
+  {
    "id": "roar",
    "name": "Roar TM",
    "holder": "Teddiursa",
@@ -1033,6 +1046,126 @@
    "group": "team",
    "import": {
     "global": "TERA_ORB"
+   }
+  },
+  {
+   "id": "expall",
+   "name": "Exp. All",
+   "holder": null,
+   "qty": 5,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "EXP_SHARE"
+   }
+  },
+  {
+   "id": "amulet",
+   "name": "Amulet Coin",
+   "holder": null,
+   "qty": 5,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "AMULET_COIN"
+   }
+  },
+  {
+   "id": "berrypouch",
+   "name": "Berry Pouch",
+   "holder": null,
+   "qty": 3,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "BERRY_POUCH"
+   }
+  },
+  {
+   "id": "catchcharm",
+   "name": "Catching Charm",
+   "holder": null,
+   "qty": 3,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "CATCHING_CHARM"
+   }
+  },
+  {
+   "id": "abilitycharm",
+   "name": "Ability Charm",
+   "holder": null,
+   "qty": 4,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "ABILITY_CHARM"
+   }
+  },
+  {
+   "id": "lockcap",
+   "name": "Lock Capsule",
+   "holder": null,
+   "qty": 1,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "LOCK_CAPSULE"
+   }
+  },
+  {
+   "id": "megabracelet",
+   "name": "Mega Bracelet",
+   "holder": null,
+   "qty": 1,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "MEGA_BRACELET"
+   }
+  },
+  {
+   "id": "dynamaxband",
+   "name": "Dynamax Band",
+   "holder": null,
+   "qty": 1,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "DYNAMAX_BAND"
+   }
+  },
+  {
+   "id": "shinycharm",
+   "name": "Shiny Charm",
+   "holder": null,
+   "qty": 4,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "SHINY_CHARM"
+   }
+  },
+  {
+   "id": "healcharm",
+   "name": "Healing Charm",
+   "holder": null,
+   "qty": 5,
+   "source": "variant",
+   "group": "team",
+   "note": "Once maxed it leaves the reward pool, so the items you need show up more often.",
+   "import": {
+    "global": "HEALING_CHARM"
    }
   },
   {
@@ -1239,19 +1372,20 @@
     }
    },
    {
-    "n": 32,
+    "n": 33,
     "base": "Teddiursa",
-    "partner": "Wild Taunt user",
+    "partner": "Wild Thief user",
     "teach": [
-     "Taunt"
+     "Thief"
     ],
     "result": "unsplice",
     "group": "teddiursa",
     "import": {
      "move": [
-      "TAUNT"
+      "THIEF"
      ]
-    }
+    },
+    "alt": "the Thief TM"
    },
    {
     "n": 16,
@@ -1583,7 +1717,10 @@
     "lucky-gg",
     "golden-gg"
    ],
-   "rec": "Hidden ability Midnight Lycanroc (No Guard), the fastest sand-immune No Guard pick"
+   "rec": "Hidden ability Midnight Lycanroc (No Guard), the fastest sand-immune No Guard pick",
+   "notes": [
+    "Not No Guard? Give it 3 Wide Lens so Dark Void hits."
+   ]
   },
   {
    "id": "teddiurk",
@@ -1593,7 +1730,7 @@
     "Roar",
     "Gastro Acid",
     "Core Enforcer",
-    "Taunt"
+    "Thief"
    ],
    "ability": "Any lure ability",
    "passive": "Run Away",
@@ -2148,6 +2285,8 @@
      "Give Regigigas every Silk Scarf you find. They make Normal moves stronger. This helps most at the start, so Regigigas can knock out enemies in one hit.",
      "Rock Slide or Land's Wrath hits both enemies in a double battle. Darkest Lariat is for hitting one enemy.",
      "Put Pumpkaboo second in your team. Its Illuminate passive brings more double battles. Keep one Lure going too, so normal waves are double battles.",
+     "Give any Multi Lens you find to Regigigas while it does the fighting, so it hits more times. Later, move two to Gourgeist (Staller) with Transfer on the reward screen.",
+     "Give Regigigas Golden Punches too (up to 5). Every hit it deals earns money.",
      "The run can feel slow at first. It gets faster once you do the first fusion ({dv} onto Pumpkaboo) and get the Lock Capsule."
     ],
     "variant": {
@@ -2191,6 +2330,8 @@
       ]
      },
      "Put Pumpkaboo second in your team. Its Illuminate passive brings more double battles. Keep one Lure going too, so normal waves are double battles.",
+     "Give any Multi Lens you find to {mb} while it does the fighting, so it hits more times. Later, move two to Gourgeist (Staller) with Transfer on the reward screen.",
+     "Give {mb} Golden Punches too (up to 5). Every hit it deals earns money.",
      "The run can feel slow at first. It gets faster once you do the first fusion ({dv} onto Pumpkaboo) and get the Lock Capsule."
     ]
    },

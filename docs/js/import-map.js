@@ -79,8 +79,9 @@
         var t = ms.filter(function (m) { return m.p.teraType === typeId[r.tera]; });
         put(k, t.length ? 1 : 0, t.length ? names(t) + " has " + nice(r.tera) + " tera" : "no " + nice(r.tera) + " tera type");
       } else if (r.global) {
-        var g = session.modifiers.some(function (mod) { return mod.typeId === r.global; });
-        put(k, g ? 1 : 0, g ? "in your items" : "not in your items");
+        // player-wide items stack (Exp. All, charms); count every stack, capped at the target
+        var gn = session.modifiers.reduce(function (sum, mod) { return mod.typeId === r.global ? sum + (mod.stackCount || 1) : sum; }, 0);
+        put(k, Math.min(q, gn), gn ? "you have " + gn : "not in your items");
       }
     });
 
